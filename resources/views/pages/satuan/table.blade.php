@@ -36,8 +36,8 @@
                 </form>
             </div>
         </div>
-        <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div class="inline-block min-w-full shadow rounded-md overflow-hidden">
+        <div class="pt-4 overflow-x">
+            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -69,24 +69,23 @@
                     </thead>
                     <tbody class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
                         @forelse ($satuans as $satuan)
-                            <tr>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                            <tr class="text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $loop->iteration }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $satuan->kode_satuan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $satuan->nama_satuan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $satuan->singkatan_satuan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap line-clamp-1">{{ $satuan->deskripsi_satuan }}</p>
                                 </td>
-                                <td
-                                    class="px-5 flex gap-2 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5 flex gap-2 items-center justify-center">
                                     <x-primary-button class="p-2" x-data=""
                                         x-on:click="$dispatch('open-modal', `edit_modal_satuan{{ $satuan->id }}}`)">
                                         <x-eva-edit-2-outline class="w-5 h-5" />

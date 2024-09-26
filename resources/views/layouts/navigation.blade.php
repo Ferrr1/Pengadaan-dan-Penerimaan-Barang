@@ -1,6 +1,6 @@
 <!-- resources/views/components/sidebar.blade.php -->
 <nav
-    class="bg-white dark:bg-gray-800 sticky dark:text-white w-[300px] min-h-screen p-4 transition-all duration-300 ease-in-out">
+    class="bg-white dark:bg-gray-800 dark:text-white w-[300px] min-h-screen p-4 transition-all duration-300 ease-in-out">
     <div class="flex items-center mb-8">
         <h2 class="text-2xl font-semibold sidebar-full text-nowrap">SIM</h2>
     </div>
@@ -24,6 +24,11 @@
                         <x-elemplus-money class="w-5" />{{ __('APP') }}
                     </div>
                 </x-nav-link>
+                <x-nav-link>
+                    <div class="flex items-center gap-2">
+                        <x-fluentui-box-multiple-arrow-left-20-o class="w-5" />{{ __('PP') }}
+                    </div>
+                </x-nav-link>
             </div>
         </ul>
         <x-nav-link onclick="toggleSubmenu(this)" class="flex justify-between items-center mb-4">
@@ -40,14 +45,14 @@
                         <x-carbon-product class="w-5" />{{ __('Produk') }}
                     </div>
                 </x-nav-link>
-                <x-nav-link>
+                <x-nav-link :href="route('transaksis.index')" :active="request()->routeIs('transaksis.index')">
                     <div class="flex items-center gap-2">
-                        <x-carbon-product class="w-5" />{{ __('Transaksi') }}
+                        <x-hugeicons-trade-up class="w-5" />{{ __('Transaksi') }}
                     </div>
                 </x-nav-link>
-                <x-nav-link>
+                <x-nav-link :href="route('kelAnggarans.index')" :active="request()->routeIs('kelAnggarans.index')">
                     <div class="flex items-center gap-2">
-                        <x-carbon-product class="w-5" />{{ __('Kel. Anggaran') }}
+                        <x-carbon-group-objects class="w-5" />{{ __('Kel. Anggaran') }}
                     </div>
                 </x-nav-link>
                 <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.index')">

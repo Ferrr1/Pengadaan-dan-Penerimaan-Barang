@@ -38,8 +38,8 @@
                     class="appearance-none dark:bg-gray-900 dark:text-white rounded-r rounded-l sm:rounded-l-none border border-gray-700 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
             </div>
         </div>
-        <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-            <div class="inline-block min-w-full shadow rounded-md overflow-hidden">
+        <div class="pt-4 overflow-x">
+            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -63,18 +63,18 @@
                     </thead>
                     <tbody class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
                         @foreach ($users as $user)
-                            <tr id="user_{{ $user->id }}">
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                            <tr id="user_{{ $user->id }}"
+                                class="text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $user->id }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $user->name }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $user->email }}</p>
                                 </td>
-                                <td
-                                    class="px-5 py-5 flex gap-2 text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                                <td class="px-5 py-5 flex gap-2 items-center justify-center">
                                     <x-primary-button x-data=""
                                         x-on:click="fetchUserData({{ $user->id }}).then(() => $dispatch('open-modal', 'modal_user'))"
                                         class="p-2"><x-eva-edit-2-outline class="w-5 h-5" /></x-primary-button>

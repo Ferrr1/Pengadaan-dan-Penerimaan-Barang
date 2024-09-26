@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AnggaranController;
+use App\Http\Controllers\KelAnggaranController;
+use App\Http\Controllers\PermintaanPembelianController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RekananController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SubAnggaranController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,8 +34,14 @@ Route::middleware('auth')->group(function () {
     // Anggaran
     Route::resource('anggarans', AnggaranController::class);
     // Sub Anggaran
-    Route::resource('subAnggarans', SubAnggaranController::class)->except(['store']);;
+    Route::resource('subAnggarans', SubAnggaranController::class)->except(['store']);
     Route::post('/subAnggarans/{anggaran}', [SubAnggaranController::class, 'store'])->name('subAnggarans.store');
+    // Kelompok Anggaran
+    Route::resource('kelAnggarans', KelAnggaranController::class);
+    // Transaksi
+    Route::resource('transaksis', TransaksiController::class);
+    // Permintaan Pembelian
+    Route::resource('permintaans', PermintaanPembelianController::class);
     // Satuan
     Route::resource('satuans', SatuanController::class);
     // Projects

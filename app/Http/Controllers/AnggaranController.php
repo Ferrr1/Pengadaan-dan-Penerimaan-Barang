@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Anggaran;
 use App\Http\Requests\StoreAnggaranRequest;
 use App\Http\Requests\UpdateAnggaranRequest;
+use App\Models\Kel_Anggaran;
 use App\Models\Project;
 use App\Models\Satuan;
 use App\Models\SubAnggaran;
@@ -20,6 +21,7 @@ class AnggaranController extends Controller
     {
         $queryAnggaran = Anggaran::query();
         $queryProject = Project::query();
+        $queryKelAnggaran = Kel_Anggaran::query();
         $sortField = $request->input("sort_field", 'created_at');
         $sortDirection = $request->input("sort_direction", "desc");
         $perPage = $request->input("perPage", 10);
@@ -37,11 +39,12 @@ class AnggaranController extends Controller
             $perPage = (int) $perPage;
 
             $projects = $queryProject->orderBy($sortField, $sortDirection)->get();
+            $kel_anggarans = $queryKelAnggaran->orderBy($sortField, $sortDirection)->get();
             $anggarans = $queryAnggaran->orderBy($sortField, $sortDirection)
                 ->paginate($perPage)
                 ->onEachSide(1);
         }
-        return view('pages.anggaran.index', compact('anggarans', 'projects', 'sortField', 'sortDirection', 'perPage'));
+        return view('pages.anggaran.index', compact('anggarans', 'projects', 'kel_anggarans', 'sortField', 'sortDirection', 'perPage'));
     }
 
     /**
@@ -61,12 +64,19 @@ class AnggaranController extends Controller
             $validation = $request->validate([
                 'kode_anggaran_project' => 'required|exists:projects,kode_project',
                 'nama_anggaran_project' => 'required|exists:projects,nama_project',
+                'kel_anggaran_project' => 'required|exists:kel_anggarans,nama_kel_anggaran',
             ]);
-            if (!$validation) {
-                return notyf()->error('Anggaran gagal dibuat periksa kembali inputan anda');
+            $existingAnggaran = Anggaran::where('kode_anggaran_project', $validation['kode_anggaran_project'])->first();
+            if ($existingAnggaran) {
+                return redirect()->back()->with([
+                    notyf()->position('y', 'top')->error('Anggaran project sudah ada. Silakan gunakan kode anggaran lain.')
+                ]);
             }
             $project = Project::where('kode_project', $validation['kode_anggaran_project'])->firstOrFail();
+            $kel_anggaran = Kel_Anggaran::where('nama_kel_anggaran', $validation['kel_anggaran_project'])->firstOrFail();
+            // dd($project, $kel_anggaran, $validation);
             $validation['project_id'] =  $project->id;
+            $validation['kel_anggaran_id'] =  $kel_anggaran->id;
             // dd($validation);
             Anggaran::create($validation);
 

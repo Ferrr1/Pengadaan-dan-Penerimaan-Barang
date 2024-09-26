@@ -46,6 +46,7 @@
             initDarkMode() {
                 this.mode = localStorage.getItem('darkMode') || 'system';
                 this.updateDarkMode();
+                this.watchSystemPreference();
             },
             setMode(newMode) {
                 this.mode = newMode;
@@ -59,6 +60,13 @@
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
+            },
+            watchSystemPreference() {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                    if (this.mode === 'system') {
+                        this.updateDarkMode();
+                    }
+                });
             }
         }
     }

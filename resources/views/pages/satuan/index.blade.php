@@ -41,7 +41,7 @@
                         </div>
                     </div>
                 </div>
-                <x-primary-button class="mt-4 px-4 py-2">Add Satuan</x-primary-button>
+                <x-primary-button class="mt-4 px-4 py-2">Tambah Satuan</x-primary-button>
             </form>
             <div class="mt-4">
                 @include('pages.satuan.table')

@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{ darkMode: localStorage.getItem('darkMode') || 'system' }"
-    :class="{
-        'dark': darkMode === 'dark' || (darkMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)')
-            .matches)
-    }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -18,9 +14,18 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        (function() {
+            var darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'dark' || (darkMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)')
+                    .matches)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased transition-colors duration-300">
     <div>
         <div class="min-h-screen min-w-[100%] overflow-hidden bg-gray-100 dark:bg-gray-900 flex">
             @include('layouts.navigation')
@@ -73,8 +78,7 @@
                 @endisset
 
                 <!-- Page Content -->
-                <main
-                    class="min-w-full sm:max-w-screen-sm md:max-w-screen-md max-w-screen-lg mx-auto transition-colors duration-300">
+                <main class="min-w-full sm:max-w-screen-sm md:max-w-screen-md max-w-screen-lg mx-auto">
                     {{ $slot }}
                 </main>
             </div>

@@ -98,26 +98,26 @@
                     </thead>
                     <tbody class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
                         @forelse ($rekanans as $rekanan)
-                            <tr>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                            <tr class="text-sm border-b-2 border-gray-200 dark:border-gray-700">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $loop->iteration }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->kode_rekanan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->nama_rekanan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->alamat_rekanan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->telepon_rekanan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->email_rekanan }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <span
                                         class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                         <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
@@ -126,14 +126,13 @@
                                         </span>
                                     </span>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->tgl_bergabung }}</p>
                                 </td>
-                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $rekanan->tgl_akhir }}</p>
                                 </td>
-                                <td
-                                    class="px-5 min-h-full flex gap-2 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                <td class="px-5 py-5 flex gap-2 items-center justify-center">
                                     <x-primary-button class="p-2" x-data=""
                                         x-on:click="$dispatch('open-modal', `edit_modal_rekanan{{ $rekanan->id }}}`)">
                                         <x-eva-edit-2-outline class="w-5 h-5" />
