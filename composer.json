@@ -14,7 +14,8 @@
         "khatabwedaa/blade-css-icons": "^1.4",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
-        "mallardduck/blade-boxicons": "^2.4"
+        "mallardduck/blade-boxicons": "^2.4",
+        "php-flasher/flasher-notyf-laravel": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -27,6 +28,9 @@
         "pestphp/pest-plugin-laravel": "^3.0"
     },
     "autoload": {
+        "files": [
+        "app/Helpers/rupiah_format.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

@@ -29,23 +29,27 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
+        try {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'password' => ['required', 'confirmed', Password::defaults()],
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Registered successfully',
-            'data' => $user
-        ]);
+            return response()->json([
+                'success' => true,
+                notyf()->position('y', 'top')->success('User berhasil dibuat'),
+                'data' => $user
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['error' => true, notyf()->position('y', 'top')->error('User gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     public function destroy($id)
@@ -53,9 +57,9 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->delete();
-            return response()->json(['success' => true, 'message' => 'Deleted successfully']);
+            return response()->json([notyf()->position('y', 'top')->success('User berhasil dihapus')]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Terjadi kesalahan saat menghapus user'], 500);
+            return response()->json([notyf()->position('y', 'top')->error('User gagal dihapus. Silakan coba lagi.')], 500);
         }
     }
 }

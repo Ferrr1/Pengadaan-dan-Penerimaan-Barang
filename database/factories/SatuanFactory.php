@@ -17,9 +17,9 @@ class SatuanFactory extends Factory
     public function definition(): array
     {
         return [
-            'kode_satuan' => fake(),
+            'kode_satuan' => fake()->randomNumber(6, true),
             'nama_satuan' => fake()->text(12),
-            'singkatan_satuan' => fake()->word(1),
+            'singkatan_satuan' => fake()->word(),
             'deskripsi_satuan' => fake()->paragraph(1),
         ];
     }

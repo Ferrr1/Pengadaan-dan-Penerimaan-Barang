@@ -32,22 +32,27 @@ class SubAnggaranController extends Controller
      */
     public function store(StoreSubAnggaranRequest $request, Anggaran $anggaran)
     {
-        $validation = $request->validate([
-            'no_detail' => 'required',
-            'kode_anggaran' => 'required',
-            'nama_anggaran' => 'required|string',
-            'satuan_id' => 'required|exists:satuans,id',
-            'kuantitas_anggaran' => 'required|numeric',
-            'harga_anggaran' => 'required|numeric',
-        ]);
+        try {
+            $validation = $request->validate([
+                'no_detail' => 'required',
+                'kode_anggaran' => 'required',
+                'nama_anggaran' => 'required|string',
+                'satuan_id' => 'required|exists:satuans,id',
+                'kuantitas_anggaran' => 'required|numeric',
+                'harga_anggaran' => 'required|numeric',
+            ]);
 
-        $validation['anggaran_id'] = $anggaran->id;
+            $validation['anggaran_id'] = $anggaran->id;
+            $validation['total_anggaran'] = $validation['kuantitas_anggaran'] * $validation['harga_anggaran'];
 
-        SubAnggaran::create($validation);
+            SubAnggaran::create($validation);
 
-        return redirect()->route('anggarans.show', $anggaran)->with([
-            'success' => 'Sub Anggaran created successfully',
-        ]);
+            return redirect()->route('anggarans.show', $anggaran)->with([
+                notyf()->position('y', 'top')->success('Sub Anggaran berhasil dibuat'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -71,7 +76,28 @@ class SubAnggaranController extends Controller
      */
     public function update(UpdateSubAnggaranRequest $request, SubAnggaran $subAnggaran)
     {
-        //
+        try {
+            $anggaran = $subAnggaran->anggaran;
+            $validation = $request->validate([
+                'no_detail' => 'required',
+                'kode_anggaran' => 'required',
+                'nama_anggaran' => 'required|string',
+                'satuan_id' => 'required|exists:satuans,id',
+                'kuantitas_anggaran' => 'required|numeric',
+                'harga_anggaran' => 'required|numeric',
+            ]);
+
+            $validation['anggaran_id'] = $anggaran->id;
+            $validation['total_anggaran'] = $validation['kuantitas_anggaran'] * $validation['harga_anggaran'];
+
+            $subAnggaran->update($validation);
+
+            return redirect()->route('anggarans.show', $anggaran)->with([
+                notyf()->position('y', 'top')->success('Sub Anggaran berhasil dibuat'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -79,6 +105,13 @@ class SubAnggaranController extends Controller
      */
     public function destroy(SubAnggaran $subAnggaran)
     {
-        //
+        try {
+            $subAnggaran->delete();
+            return redirect()->route('anggarans.show', $subAnggaran->anggaran)->with([
+                notyf()->position('y', 'top')->success('Sub Anggaran berhasil di hapus'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal di hapus. Silakan coba lagi.')]);
+        }
     }
 }

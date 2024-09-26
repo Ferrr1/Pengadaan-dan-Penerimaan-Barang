@@ -80,7 +80,7 @@
                                     <p class="whitespace-no-wrap">{{ $produk->nama_produk }}</p>
                                 </td>
                                 <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
-                                    <p class="whitespace-no-wrap">Rp. {{ $produk->harga_produk }}</p>
+                                    <p class="whitespace-no-wrap">{{ formatRupiah($produk->harga_produk) }}</p>
                                 </td>
                                 <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
                                     <span

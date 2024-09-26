@@ -60,27 +60,31 @@ class RekananController extends Controller
      */
     public function store(StoreRekananRequest $request)
     {
-        $validation = $request->validate([
-            'nama_rekanan' => 'required',
-            'alamat_rekanan' => 'required',
-            'telepon_rekanan' => 'required|numeric|max_digits:12',
-            'email_rekanan' => 'required|email',
-            'status_rekanan' => 'required|string',
-            'tgl_bergabung' => 'required|date',
-            'tgl_akhir' => 'required|date',
-            'project_id' => 'nullable',
-        ]);
-        $lastKodeRekanan = Rekanan::orderBy('kode_rekanan', 'desc')->first();
-        $nextKodeRekanan = $lastKodeRekanan ? str_pad((int)$lastKodeRekanan->kode_rekanan + 1, 6, '0', STR_PAD_LEFT) : '000001';
+        try {
+            $validation = $request->validate([
+                'nama_rekanan' => 'required',
+                'alamat_rekanan' => 'required',
+                'telepon_rekanan' => 'required|numeric|max_digits:12',
+                'email_rekanan' => 'required|email',
+                'status_rekanan' => 'required|string',
+                'tgl_bergabung' => 'required|date',
+                'tgl_akhir' => 'required|date',
+                'project_id' => 'nullable',
+            ]);
+            $lastKodeRekanan = Rekanan::orderBy('kode_rekanan', 'desc')->first();
+            $nextKodeRekanan = $lastKodeRekanan ? str_pad((int)$lastKodeRekanan->kode_rekanan + 1, 6, '0', STR_PAD_LEFT) : '000001';
 
-        // Add the next kode_rekanan to the validated data
-        $validation['kode_rekanan'] = $nextKodeRekanan;
-        // dd($validation);
-        Rekanan::create($validation);
+            // Add the next kode_rekanan to the validated data
+            $validation['kode_rekanan'] = $nextKodeRekanan;
+            // dd($validation);
+            Rekanan::create($validation);
 
-        return redirect()->route('suppliers.index')->with([
-            'success' => 'Rekanan created successfully',
-        ]);
+            return redirect()->route('suppliers.index')->with([
+                notyf()->position('y', 'top')->success('Rekanan berhasil dibuat'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Rekanan gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -104,22 +108,26 @@ class RekananController extends Controller
      */
     public function update(UpdateRekananRequest $request, $id)
     {
-        $rekanan = Rekanan::findOrFail($id);
-        $validation = $request->validate([
-            'nama_rekanan' => 'required',
-            'alamat_rekanan' => 'required',
-            'telepon_rekanan' => 'required|numeric|max_digits:12',
-            'email_rekanan' => 'required|email',
-            'status_rekanan' => 'required|string',
-            'tgl_bergabung' => 'required|date',
-            'tgl_akhir' => 'required|date',
-            'project_id' => 'nullable',
-        ]);
-        $rekanan->update($validation);
+        try {
+            $rekanan = Rekanan::findOrFail($id);
+            $validation = $request->validate([
+                'nama_rekanan' => 'required',
+                'alamat_rekanan' => 'required',
+                'telepon_rekanan' => 'required|numeric|max_digits:12',
+                'email_rekanan' => 'required|email',
+                'status_rekanan' => 'required|string',
+                'tgl_bergabung' => 'required|date',
+                'tgl_akhir' => 'required|date',
+                'project_id' => 'nullable',
+            ]);
+            $rekanan->update($validation);
 
-        return redirect()->route('suppliers.index')->with([
-            'success' => 'Rekanan updated successfully',
-        ]);
+            return redirect()->route('suppliers.index')->with([
+                notyf()->position('y', 'top')->success('Rekanan berhasil diupdate'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Rekanan gagal diupdate. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -127,8 +135,14 @@ class RekananController extends Controller
      */
     public function destroy($id)
     {
-        $rekanan = Rekanan::findOrFail($id);
-        $rekanan->delete();
-        return redirect()->route('suppliers.index')->with('success', 'Rekanan deleted successfully');
+        try {
+            $rekanan = Rekanan::findOrFail($id);
+            $rekanan->delete();
+            return redirect()->route('suppliers.index')->with([
+                notyf()->position('y', 'top')->success('Rekanan berhasil di hapus'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Rekanan gagal di hapus. Silakan coba lagi.')]);
+        }
     }
 }

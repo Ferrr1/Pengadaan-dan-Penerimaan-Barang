@@ -17,17 +17,11 @@
                                     @select-project.window="kodeProject = $event.detail.id; namaProject = $event.detail.name">
                                     <x-text-input id="project" class="block mt-1 w-full" type="text" name="project"
                                         x-model="kodeProject" readonly />
-                                    <x-input-error :messages="$errors->get('no_detail')" class="mt-2" />
-                                    <x-input-error :messages="$errors->get('kode_anggaran')" class="mt-2" />
-                                    <x-input-error :messages="$errors->get('nama_anggaran')" class="mt-2" />
-                                    <x-input-error :messages="$errors->get('satuan_id')" class="mt-2" />
-                                    <x-input-error :messages="$errors->get('kuantitas_anggaran')" class="mt-2" />
-                                    <x-input-error :messages="$errors->get('harga_anggaran')" class="mt-2" />
                                     <x-input-label for="kode" class="mt-2" :value="__('Nama Proyek')" />
                                     <x-text-input id="project" class="block mt-1 w-full" type="text" name="project"
                                         x-model="namaProject" readonly />
                                     {{-- <input type="hidden" name="kode_project" x-model="kodeProject" />
-                                    <input type="hidden" name="nama_project" x-model="namaProject" /> --}}
+                                        <input type="hidden" name="nama_project" x-model="namaProject" /> --}}
 
                                     <x-secondary-button disabled type="button" class="absolute py-2 px-3 right-1 top-1"
                                         x-on:click="$dispatch('open-modal', 'project_modal_anggaran')">
@@ -36,6 +30,12 @@
                                 </div>
                             </div>
                         </div>
+                        <x-input-error :messages="$errors->get('no_detail')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('kode_anggaran')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('nama_anggaran')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('satuan_id')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('kuantitas_anggaran')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('harga_anggaran')" class="mt-2" />
                     </div>
                 </div>
             </div>
@@ -47,6 +47,8 @@
             </div>
             {{-- Modal --}}
             @include('pages.anggaran.add_sub_anggaran_modal')
+            @include('pages.anggaran.edit_sub_anggaran_modal')
+            @include('pages.anggaran.delete_sub_anggaran_modal')
             @include('pages.anggaran.satuan')
             {{-- @include('pages.anggaran.delete_modal') --}}
         </div>

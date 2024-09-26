@@ -55,19 +55,23 @@ class SatuanController extends Controller
      */
     public function store(StoreSatuanRequest $request)
     {
-        $validation = $request->validate([
-            'nama_satuan' => 'required',
-            'singkatan_satuan' => 'required',
-            'deskripsi_satuan' => 'required|min:12|max:255',
-        ]);
-        $lastKodeSatuan = Satuan::orderBy('kode_satuan', 'desc')->first();
-        $nextKodeSatuan = $lastKodeSatuan ? str_pad((int)$lastKodeSatuan->kode_satuan + 1, 6, '0', STR_PAD_LEFT) : '000001';
-        $validation['kode_satuan'] = $nextKodeSatuan;
-        Satuan::create($validation);
+        try {
+            $validation = $request->validate([
+                'nama_satuan' => 'required',
+                'singkatan_satuan' => 'required',
+                'deskripsi_satuan' => 'required|min:12|max:255',
+            ]);
+            $lastKodeSatuan = Satuan::orderBy('kode_satuan', 'desc')->first();
+            $nextKodeSatuan = $lastKodeSatuan ? str_pad((int)$lastKodeSatuan->kode_satuan + 1, 6, '0', STR_PAD_LEFT) : '000001';
+            $validation['kode_satuan'] = $nextKodeSatuan;
+            Satuan::create($validation);
 
-        return redirect()->route('satuans.index')->with([
-            'success' => 'Satuan created successfully',
-        ]);
+            return redirect()->route('satuans.index')->with([
+                notyf()->position('y', 'top')->success('Satuan berhasil dibuat'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Satuan gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -91,16 +95,20 @@ class SatuanController extends Controller
      */
     public function update(Request $request, Satuan $satuan)
     {
-        $validation = $request->validate([
-            'nama_satuan' => 'required',
-            'singkatan_satuan' => 'required',
-            'deskripsi_satuan' => 'required|min:12|max:255',
-        ]);
-        $satuan->update($validation);
+        try {
+            $validation = $request->validate([
+                'nama_satuan' => 'required',
+                'singkatan_satuan' => 'required',
+                'deskripsi_satuan' => 'required|min:12|max:255',
+            ]);
+            $satuan->update($validation);
 
-        return redirect()->route('satuans.index')->with([
-            'success' => 'Satuan updated successfully',
-        ]);
+            return redirect()->route('satuans.index')->with([
+                notyf()->position('y', 'top')->success('Satuan berhasil diupdate'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Satuan gagal diupdate. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -108,7 +116,13 @@ class SatuanController extends Controller
      */
     public function destroy(Satuan $satuan)
     {
-        $satuan->delete();
-        return redirect()->route('satuans.index')->with('success', 'Satuan deleted successfully');
+        try {
+            $satuan->delete();
+            return redirect()->route('satuans.index')->with([
+                notyf()->position('y', 'top')->success('Satuan berhasil di hapus'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Satuan gagal di hapus. Silakan coba lagi.')]);
+        }
     }
 }

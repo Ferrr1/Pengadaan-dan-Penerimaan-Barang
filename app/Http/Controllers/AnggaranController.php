@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Satuan;
 use App\Models\SubAnggaran;
 use Illuminate\Http\Request;
+// use Flasher\Notyf\Prime\NotyfInterface;
 
 class AnggaranController extends Controller
 {
@@ -56,18 +57,25 @@ class AnggaranController extends Controller
      */
     public function store(StoreAnggaranRequest $request)
     {
-        $validation = $request->validate([
-            'kode_anggaran_project' => 'required|exists:projects,kode_project',
-            'nama_anggaran_project' => 'required|exists:projects,nama_project',
-        ]);
-        $project = Project::where('kode_project', $validation['kode_anggaran_project'])->firstOrFail();
-        $validation['project_id'] =  $project->id;
-        // dd($validation);
-        Anggaran::create($validation);
+        try {
+            $validation = $request->validate([
+                'kode_anggaran_project' => 'required|exists:projects,kode_project',
+                'nama_anggaran_project' => 'required|exists:projects,nama_project',
+            ]);
+            if (!$validation) {
+                return notyf()->error('Anggaran gagal dibuat periksa kembali inputan anda');
+            }
+            $project = Project::where('kode_project', $validation['kode_anggaran_project'])->firstOrFail();
+            $validation['project_id'] =  $project->id;
+            // dd($validation);
+            Anggaran::create($validation);
 
-        return redirect()->route('anggarans.index')->with([
-            'success' => 'Anggaran created successfully',
-        ]);
+            return redirect()->route('anggarans.index')->with([
+                notyf()->position('y', 'top')->success('Anggaran berhasil dibuat'),
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Anggaran gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -129,22 +137,7 @@ class AnggaranController extends Controller
      */
     public function update(UpdateAnggaranRequest $request, Anggaran $anggaran)
     {
-        // $anggaran = Anggaran::findOrFail($id);
-        $validation = $request->validate([
-            'nama_anggaran' => 'required',
-            'alamat_anggaran' => 'required',
-            'telepon_anggaran' => 'required|numeric|max_digits:12',
-            'email_anggaran' => 'required|email',
-            'status_anggaran' => 'required|string',
-            'tgl_bergabung' => 'required|date',
-            'tgl_akhir' => 'required|date',
-            'project_id' => 'nullable',
-        ]);
-        $anggaran->update($validation);
-
-        return redirect()->route('suppliers.index')->with([
-            'success' => 'Anggaran updated successfully',
-        ]);
+        //
     }
 
     /**
@@ -153,7 +146,13 @@ class AnggaranController extends Controller
     public function destroy(Anggaran $anggaran)
     {
         // $anggaran = Anggaran::findOrFail($id);
-        $anggaran->delete();
-        return redirect()->route('suppliers.index')->with('success', 'Anggaran deleted successfully');
+        try {
+            $anggaran->delete();
+            return redirect()->route('anggarans.index')->with([
+                notyf()->position('y', 'top')->success('Anggaran berhasil di hapus'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Anggaran gagal di hapus. Silakan coba lagi.')]);
+        }
     }
 }

@@ -7,8 +7,6 @@
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div id="message" class="py-3 px-4 hidden text-white border-l-4  mb-4 rounded-l-none rounded-md">
-            </div>
             <form id="userForm">
                 @csrf
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -81,13 +79,7 @@
                     data: formData,
                     success: function(response) {
                         if (response.success) {
-                            // Tampilkan pesan sukses
-                            $('#message').removeClass('hidden').addClass(
-                                    'bg-green-600').fadeIn(500).delay(3000)
-                                .fadeOut(
-                                    500).html(response.data.name +
-                                    ' ' + response.message);
-
+                            location.reload();
                             $('#userForm')[0].reset();
 
                             var newRowTable = `
@@ -111,6 +103,7 @@
                         }
                     },
                     error: function(xhr) {
+                        location.reload();
                         let errors = xhr.responseJSON.errors;
                         let errorMessage = '';
 
@@ -118,12 +111,6 @@
                         $.each(errors, function(key, value) {
                             errorMessage += value[0] + '<br>';
                         });
-
-                        // Tampilkan pesan error
-                        $('#message').removeClass('hidden').addClass(
-                            'bg-red-600').fadeIn(500).delay(3000).fadeOut(
-                            500).html(
-                            errorMessage);
                     }
                 });
             });
@@ -143,14 +130,11 @@
                             if (response.success) {
                                 // Tampilkan pesan sukses
                                 $('#user_' + userId).remove();
-                                $('#message').removeClass('hidden').addClass(
-                                        'bg-green-600').fadeIn(500).delay(3000)
-                                    .fadeOut(
-                                        500).html(response.message);
                                 location.reload();
                             }
                         },
                         error: function(xhr) {
+                            location.reload();
                             let errors = xhr.responseJSON.errors;
                             let errorMessage = '';
 
@@ -158,12 +142,6 @@
                             $.each(errors, function(key, value) {
                                 errorMessage += value[0] + '<br>';
                             });
-
-                            // Tampilkan pesan error
-                            $('#message').removeClass('hidden').addClass(
-                                'bg-red-600').fadeIn(500).delay(3000).fadeOut(
-                                500).html(
-                                errorMessage);
                         }
                     });
                 }

@@ -16,6 +16,7 @@ class SubAnggaran extends Model
         'satuan_id',
         'kuantitas_anggaran',
         'harga_anggaran',
+        'total_anggaran',
     ];
 
     public function anggaran()

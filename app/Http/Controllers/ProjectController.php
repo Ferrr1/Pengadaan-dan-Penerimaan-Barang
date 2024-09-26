@@ -61,22 +61,26 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        $validation = $request->validate([
-            'nama_project' => 'required',
-            'tgl_mulai' => 'required|date',
-            'status_project' => 'required|string',
-        ]);
-        $lastKodeProject = Project::orderBy('kode_project', 'desc')->first();
-        $nextKodeProject = $lastKodeProject ? str_pad((int)$lastKodeProject->kode_project + 1, 6, '0', STR_PAD_LEFT) : '000001';
+        try {
+            $validation = $request->validate([
+                'nama_project' => 'required',
+                'tgl_mulai' => 'required|date',
+                'status_project' => 'required|string',
+            ]);
+            $lastKodeProject = Project::orderBy('kode_project', 'desc')->first();
+            $nextKodeProject = $lastKodeProject ? str_pad((int)$lastKodeProject->kode_project + 1, 6, '0', STR_PAD_LEFT) : '000001';
 
-        // Add the next kode_project to the validated data
-        $validation['kode_project'] = $nextKodeProject;
-        // dd($validation);
-        Project::create($validation);
+            // Add the next kode_project to the validated data
+            $validation['kode_project'] = $nextKodeProject;
+            // dd($validation);
+            Project::create($validation);
 
-        return redirect()->route('projects.index')->with([
-            'success' => 'Project created successfully',
-        ]);
+            return redirect()->route('projects.index')->with([
+                notyf()->position('y', 'top')->success('Project berhasil dibuat'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Project gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -100,16 +104,20 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $validation = $request->validate([
-            'nama_project' => 'required',
-            'tgl_mulai' => 'required|date',
-            'status_project' => 'required',
-        ]);
-        $project->update($validation);
+        try {
+            $validation = $request->validate([
+                'nama_project' => 'required',
+                'tgl_mulai' => 'required|date',
+                'status_project' => 'required',
+            ]);
+            $project->update($validation);
 
-        return redirect()->route('projects.index')->with([
-            'success' => 'Project updated successfully',
-        ]);
+            return redirect()->route('projects.index')->with([
+                notyf()->position('y', 'top')->success('Project berhasil diupdate'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Project gagal diupdate. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -117,7 +125,13 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
-        return redirect()->route('projects.index')->with('success', 'Project deleted successfully');
+        try {
+            $project->delete();
+            return redirect()->route('projects.index')->with([
+                notyf()->position('y', 'top')->success('Project berhasil di hapus'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Project gagal di hapus. Silakan coba lagi.')]);
+        }
     }
 }

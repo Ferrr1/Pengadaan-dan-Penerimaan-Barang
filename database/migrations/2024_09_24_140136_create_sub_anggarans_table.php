@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('satuan_id')->constrained('satuans')->onDelete('cascade');
             $table->bigInteger('kuantitas_anggaran');
             $table->bigInteger('harga_anggaran');
+            $table->bigInteger('total_anggaran');
             $table->timestamps();
         });
     }

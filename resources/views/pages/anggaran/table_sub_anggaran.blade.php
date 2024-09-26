@@ -77,6 +77,10 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
+                                Jumlah Harga
+                            </th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
                                 Aksi
                             </th>
                         </tr>
@@ -103,16 +107,23 @@
                                     <p class="whitespace-no-wrap">{{ $subAnggaran->kuantitas_anggaran }}</p>
                                 </td>
                                 <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->harga_anggaran }}</p>
+                                    <p class="whitespace-no-wrap text-nowrap">
+                                        {{ formatRupiah($subAnggaran->harga_anggaran) }}</p>
+                                </td>
+                                <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
+                                    <p class="whitespace-no-wrap text-nowrap">
+                                        {{ formatRupiah($subAnggaran->total_anggaran) }}
+                                    </p>
                                 </td>
                                 <td
                                     class="px-5 flex gap-2 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
-                                    <x-primary-button class="p-2">
+                                    <x-primary-button type="button" class="p-2" x-data=""
+                                        x-on:click="$dispatch('open-modal', `edit_modal_subAnggaran{{ $subAnggaran->id }}}`)">
                                         <x-eva-edit-2-outline class="w-5 h-5" />
                                     </x-primary-button>
                                     {{-- Delete Button Modal --}}
                                     <x-danger-button type="button" class="p-2" x-data=""
-                                        x-on:click="$dispatch('open-modal', `delete_modal_anggaran{{ $subAnggaran->id }}}`)">
+                                        x-on:click="$dispatch('open-modal', `delete_modal_subAnggaran{{ $subAnggaran->id }}}`)">
                                         <x-eva-trash-outline class="w-5 h-5" />
                                     </x-danger-button>
                                 </td>

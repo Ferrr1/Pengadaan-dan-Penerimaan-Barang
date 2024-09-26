@@ -58,22 +58,26 @@ class ProdukController extends Controller
      */
     public function store(StoreProdukRequest $request)
     {
-        $validation = $request->validate([
-            'nama_produk' => 'required',
-            'harga_produk' => 'required|numeric|gt:0',
-            'satuan_id' => 'required|exists:satuans,id'
-        ]);
-        $lastKodeProduk = Produk::orderBy('kode_produk', 'desc')->first();
-        $nextKodeProduk = $lastKodeProduk ? str_pad((int)$lastKodeProduk->kode_produk + 1, 6, '0', STR_PAD_LEFT) : '000001';
+        try {
+            $validation = $request->validate([
+                'nama_produk' => 'required',
+                'harga_produk' => 'required|numeric|gt:0',
+                'satuan_id' => 'required|exists:satuans,id'
+            ]);
+            $lastKodeProduk = Produk::orderBy('kode_produk', 'desc')->first();
+            $nextKodeProduk = $lastKodeProduk ? str_pad((int)$lastKodeProduk->kode_produk + 1, 6, '0', STR_PAD_LEFT) : '000001';
 
-        // Add the next kode_produk to the validated data
-        $validation['kode_produk'] = $nextKodeProduk;
-        // dd($validation);
-        Produk::create($validation);
+            // Add the next kode_produk to the validated data
+            $validation['kode_produk'] = $nextKodeProduk;
+            // dd($validation);
+            Produk::create($validation);
 
-        return redirect()->route('products.index')->with([
-            'success' => 'Produk created successfully',
-        ]);
+            return redirect()->route('products.index')->with([
+                notyf()->position('y', 'top')->success('Produk berhasil dibuat'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Produk gagal dibuat. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -97,17 +101,21 @@ class ProdukController extends Controller
      */
     public function update(UpdateProdukRequest $request, $id)
     {
-        $produk = Produk::findOrFail($id);
-        $validation = $request->validate([
-            'nama_produk' => 'required',
-            'harga_produk' => 'required|numeric|gt:0',
-            'satuan_id' => 'required|exists:satuans,id'
-        ]);
-        $produk->update($validation);
+        try {
+            $produk = Produk::findOrFail($id);
+            $validation = $request->validate([
+                'nama_produk' => 'required',
+                'harga_produk' => 'required|numeric|gt:0',
+                'satuan_id' => 'required|exists:satuans,id'
+            ]);
+            $produk->update($validation);
 
-        return redirect()->route('products.index')->with([
-            'success' => 'Produk updated successfully',
-        ]);
+            return redirect()->route('products.index')->with([
+                notyf()->position('y', 'top')->success('Produk berhasil diupdate'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Produk gagal diupdate. Silakan coba lagi.')]);
+        }
     }
 
     /**
@@ -115,8 +123,14 @@ class ProdukController extends Controller
      */
     public function destroy($id)
     {
-        $produk = Produk::findOrFail($id);
-        $produk->delete();
-        return redirect()->route('products.index')->with('success', 'Produk deleted successfully');
+        try {
+            $produk = Produk::findOrFail($id);
+            $produk->delete();
+            return redirect()->route('products.index')->with([
+                notyf()->position('y', 'top')->success('Produk berhasil di hapus'),
+            ]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Produk gagal di hapus. Silakan coba lagi.')]);
+        }
     }
 }

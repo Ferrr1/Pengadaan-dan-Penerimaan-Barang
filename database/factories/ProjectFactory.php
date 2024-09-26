@@ -17,7 +17,7 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'kode_project' => fake(),
+            'kode_project' => fake()->randomNumber(6, true),
             'nama_project' => fake()->text(12),
             'tgl_mulai' => fake()->date(),
             'status_project' => fake()->randomElement(['aktif', 'tidak_aktif']),
