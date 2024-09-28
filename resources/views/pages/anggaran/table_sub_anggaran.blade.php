@@ -43,7 +43,7 @@
             </div>
         </form>
         <div class="pt-4 overflow-auto">
-            <div class="inline-block shadow rounded-md overflow-x-auto">
+            <div class="inline-block shadow rounded-md overflow-x-auto w-full">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -62,6 +62,10 @@
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
                                 Nama Anggaran
+                            </th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
+                                Kel. Anggaran
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
@@ -101,7 +105,14 @@
                                     <p class="whitespace-no-wrap">{{ $subAnggaran->nama_anggaran }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->satuan->nama_satuan }}</p>
+                                    <p class="whitespace-no-wrap">{{ $subAnggaran->kel_anggaran }}</p>
+                                </td>
+                                <td class="px-5 py-5">
+                                    <span
+                                        class="relative text-sm inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
+                                        <span class="relative">{{ $subAnggaran->satuan->singkatan_satuan }}</span>
+                                    </span>
                                 </td>
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ formatAngka($subAnggaran->kuantitas_anggaran) }}
@@ -129,7 +140,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9"
+                                <td colspan="10"
                                     class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 text-center">
                                     Tidak ada data sub anggaran yang tersedia.
                                 </td>
@@ -137,6 +148,20 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            <div class="p-1 flex justify-end">
+                <div class="flex gap-4">
+                    <div>
+                        <x-input-label :value="__('Sub Total Anggaran')" />
+                        <x-text-input class="block mt-1 w-full" type="text"
+                            value="{{ formatRupiah($total_harga_satuan) }}" disabled />
+                    </div>
+                    <div>
+                        <x-input-label :value="__('Total Anggaran')" />
+                        <x-text-input class="block mt-1 w-full" type="text"
+                            value="{{ formatRupiah($total_jumlah_harga) }}" disabled />
+                    </div>
+                </div>
             </div>
             <!-- Pagination Links -->
             <div class="d-flex justify-content-between">

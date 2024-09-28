@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="__('- Sub Anggaran Pelaksanaan Proyek')">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Anggaran Pelaksanaan Proyek - List Anggaran') }}
@@ -20,9 +20,6 @@
                                     <x-input-label for="kode" class="mt-2" :value="__('Nama Proyek')" />
                                     <x-text-input id="project" class="block mt-1 w-full" type="text" name="project"
                                         x-model="namaProject" readonly />
-                                    {{-- <input type="hidden" name="kode_project" x-model="kodeProject" />
-                                        <input type="hidden" name="nama_project" x-model="namaProject" /> --}}
-
                                     <x-secondary-button disabled type="button" class="absolute py-2 px-3 right-1 top-1"
                                         x-on:click="$dispatch('open-modal', 'project_modal_anggaran')">
                                         <x-eva-search-outline class="w-4" />

@@ -41,7 +41,7 @@ Route::middleware('auth')->group(function () {
     // Transaksi
     Route::resource('transaksis', TransaksiController::class);
     // Permintaan Pembelian
-    Route::resource('permintaans', PermintaanPembelianController::class);
+    Route::resource('permintaanPembelians', PermintaanPembelianController::class);
     // Satuan
     Route::resource('satuans', SatuanController::class);
     // Projects

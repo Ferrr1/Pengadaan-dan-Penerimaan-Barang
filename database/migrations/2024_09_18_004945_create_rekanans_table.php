@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string("status_rekanan");
             $table->date("tgl_bergabung");
             $table->date("tgl_akhir");
-            $table->foreignId("project_id")->nullable()->constrained("projects")->onDelete("cascade");
             $table->timestamps();
         });
     }

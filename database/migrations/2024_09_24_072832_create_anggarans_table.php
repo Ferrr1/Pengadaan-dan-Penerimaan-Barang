@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('anggarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained('projects')->onDelete('cascade');
-            $table->foreignId('kel_anggaran_id')->constrained('kel_anggarans')->onDelete('cascade');
+            // $table->foreignId('kel_anggaran_id')->constrained('kel_anggarans')->onDelete('cascade');
             $table->string('kode_anggaran_project', 6)->unique();
             $table->string('nama_anggaran_project');
-            $table->string('kel_anggaran_project');
+            // $table->string('kel_anggaran_project');
             $table->timestamps();
         });
     }

@@ -1,7 +1,7 @@
-<x-app-layout>
+<x-app-layout :title="__('- Sub Permintaan Pembelian Proyek')">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Anggaran Pelaksanaan Proyek - List Anggaran') }}
+            {{ __('Permintaan Pembelian - List Anggaran') }}
         </h2>
     </x-slot>
 

@@ -15,7 +15,7 @@
         "hasnayeen/blade-eva-icons": "^2.0",
         "khatabwedaa/blade-css-icons": "^1.4",
         "laravel/framework": "^11.9",
-        "laravel/tinker": "^2.9",
+        "laravel/tinker": "^2.10",
         "mallardduck/blade-boxicons": "^2.4",
         "php-flasher/flasher-notyf-laravel": "^2.0"
     },

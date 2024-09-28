@@ -6,6 +6,7 @@ use App\Models\SubAnggaran;
 use App\Http\Requests\StoreSubAnggaranRequest;
 use App\Http\Requests\UpdateSubAnggaranRequest;
 use App\Models\Anggaran;
+use App\Models\Kel_Anggaran;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,7 @@ class SubAnggaranController extends Controller
                 'no_detail' => 'required',
                 'kode_anggaran' => 'required',
                 'nama_anggaran' => 'required|string',
+                'kel_anggaran' => 'required|exists:kel_anggarans,nama_kel_anggaran',
                 'satuan_id' => 'required|exists:satuans,id',
                 'kuantitas_anggaran' => 'required|numeric',
                 'harga_anggaran' => 'required|numeric',
@@ -44,7 +46,8 @@ class SubAnggaranController extends Controller
 
             $validation['anggaran_id'] = $anggaran->id;
             $validation['total_anggaran'] = $validation['kuantitas_anggaran'] * $validation['harga_anggaran'];
-
+            $kel_anggaran = Kel_Anggaran::where('nama_kel_anggaran', $validation['kel_anggaran'])->firstOrFail();
+            $validation['kel_anggaran_id'] =  $kel_anggaran->id;
             SubAnggaran::create($validation);
 
             return redirect()->route('anggarans.show', $anggaran)->with([
@@ -82,6 +85,7 @@ class SubAnggaranController extends Controller
                 'no_detail' => 'required',
                 'kode_anggaran' => 'required',
                 'nama_anggaran' => 'required|string',
+                'kel_anggaran' => 'required|exists:kel_anggarans,nama_kel_anggaran',
                 'satuan_id' => 'required|exists:satuans,id',
                 'kuantitas_anggaran' => 'required|numeric',
                 'harga_anggaran' => 'required|numeric',
@@ -89,6 +93,8 @@ class SubAnggaranController extends Controller
 
             $validation['anggaran_id'] = $anggaran->id;
             $validation['total_anggaran'] = $validation['kuantitas_anggaran'] * $validation['harga_anggaran'];
+            $kel_anggaran = Kel_Anggaran::where('nama_kel_anggaran', $validation['kel_anggaran'])->firstOrFail();
+            $validation['kel_anggaran_id'] =  $kel_anggaran->id;
 
             $subAnggaran->update($validation);
 

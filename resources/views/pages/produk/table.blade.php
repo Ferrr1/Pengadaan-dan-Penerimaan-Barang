@@ -37,7 +37,7 @@
             </div>
         </form>
         <div class="pt-4 overflow-auto">
-            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto">
+            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto w-full">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -88,7 +88,7 @@
                                         class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                         <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
                                         <span class="relative">
-                                            {{ $produk->satuan->nama_satuan }}
+                                            {{ $produk->satuan->singkatan_satuan }}
                                         </span>
                                     </span>
                                 </td>

@@ -1,59 +1,74 @@
-<x-app-layout>
+<x-app-layout :title="__('- Permintaan Pembelian')">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Anggaran Pelaksanaan Proyek - Daftar Anggaran') }}
+            {{ __('Permintaan Pembelian - Daftar PP') }}
         </h2>
     </x-slot>
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <form action="{{ route('anggarans.store') }}" method="POST">
+            <form action="{{ route('permintaanPembelians.store') }}" method="POST">
                 @csrf
                 @method('POST')
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100 grid gap-4">
-                        <div class="grid grid-cols-1 gap-6">
-                            <div>
-                                <x-input-label for="kode" :value="__('Kode Proyek')" />
-                                <div class="relative">
-                                    <div x-data="{ kodeProject: '', namaProject: '' }"
-                                        @select-project.window="kodeProject = $event.detail.id; namaProject = $event.detail.name">
-                                        <x-text-input id="project" class="block mt-1 w-full" type="text"
-                                            name="project" x-model="kodeProject" readonly required />
-                                        <x-input-label for="kode" class="mt-2" :value="__('Nama Proyek')" />
-                                        <x-text-input id="project" class="block mt-1 w-full" type="text"
-                                            name="project" x-model="namaProject" readonly required />
-                                        <input type="hidden" name="kode_anggaran_project" x-model="kodeProject" />
-                                        <input type="hidden" name="nama_anggaran_project" x-model="namaProject" />
-                                        <x-input-label class="mt-2" for="kel_anggaran_project" :value="__('Kelompok Anggaran')" />
-                                        <select name="kel_anggaran_project" id="kel_anggaran_project"
-                                            @forelse ($kel_anggarans as $kel_anggaran) class="appearance-none dark:bg-gray-900 mt-1 rounded-l rounded-md border inline-block w-full bg-white border-gray-700 dark:text-white text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                        required>
-                                        <option value="{{ $kel_anggaran->nama_kel_anggaran }}">{{ $kel_anggaran->nama_kel_anggaran }}</option>
-                                        @empty
-                                        <option>Tidak ada Kelompok Anggaran</option> @endforelse
-                                            </select>
-                                            <x-input-error :messages="$errors->get('kel_anggaran_project')" class="mt-2" />
-
-                                            <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-1"
-                                                x-on:click="$dispatch('open-modal', 'project_modal_anggaran')">
-                                                <x-eva-search-outline class="w-4" />
-                                            </x-secondary-button>
+                        <div>
+                            <div x-data="{
+                                kodeProject: '',
+                                namaProject: '',
+                                nomorPP: '{{ $newPPCode }}',
+                                updateNomorPP() {
+                                    this.nomorPP = this.nomorPP.replace('XXXXX', this.kodeProject);
+                                }
+                            }"
+                                @select-anggaran.window="
+                                kodeProject = $event.detail.id;
+                                namaProject = $event.detail.name;
+                                updateNomorPP();
+                            ">
+                                <div>
+                                    <x-input-label for="nomor_pp" :value="__('Nomor PP')" />
+                                    <x-text-input id="nomor_pp" class="block mt-1 w-full" type="text" readonly
+                                        name="nomor_pp" x-model="nomorPP" />
+                                    <x-input-error :messages="$errors->get('nomor_pp')" class="mt-2" />
+                                </div>
+                                <x-input-label class="mt-2" for="kode_anggaran" :value="__('Proyek Peminta')" />
+                                <div class="grid grid-cols-12 gap-4">
+                                    <div class="col-span-4">
+                                        <x-text-input id="kode_anggaran" class="block mt-1 w-full" type="text"
+                                            name="kode_anggaran" x-model="kodeProject" readonly required />
+                                    </div>
+                                    <div class="relative col-span-8">
+                                        <x-text-input id="anggaran_project" class="block mt-1 w-full" type="text"
+                                            x-model="namaProject" readonly required />
+                                        <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-2"
+                                            x-on:click="$dispatch('open-modal', 'anggaran_modal_permintaan_pembelian')">
+                                            <x-eva-search-outline class="w-4" />
+                                        </x-secondary-button>
+                                    </div>
+                                    <div class="col-span-4">
+                                        <x-input-label for="tgl_pp" :value="__('Tanggal')" />
+                                        <x-text-input id="tgl_pp" class="block mt-1 w-full" type="date"
+                                            name="tgl_pp" required />
+                                    </div>
+                                    <div class="relative col-span-8">
+                                        <x-input-label for="tandatangan_pp" :value="__('Tanda Tangan')" />
+                                        <x-text-input id="tandatangan_pp" class="block mt-1 w-full" type="text"
+                                            name="tandatangan_pp" required />
                                     </div>
                                 </div>
-                                <x-input-error :messages="$errors->get('satuan')" class="mt-2" />
                             </div>
                         </div>
                     </div>
                 </div>
-                <x-primary-button class="mt-4 px-4 py-2">Tambah Anggaran</x-primary-button>
+                <x-primary-button class="mt-4 px-4 py-2">Tambah Permintaan Pembelian</x-primary-button>
             </form>
             <div class="mt-4">
-                @include('pages.anggaran.table')
+                @include('pages.permintaan_pembelian.table')
             </div>
             {{-- Modal --}}
-            @include('pages.anggaran.delete_modal')
-            @include('pages.anggaran.project_modal')
+            @include('pages.permintaan_pembelian.delete_modal')
+            @include('pages.permintaan_pembelian.project_anggaran_modal')
         </div>
     </div>
 </x-app-layout>

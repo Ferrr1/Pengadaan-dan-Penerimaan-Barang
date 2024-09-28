@@ -7,7 +7,7 @@
             {{-- Table Start --}}
             <div>
                 <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                    <form action="{{ route('kel_anggarans.update', $kel_anggaran->id) }}" method="POST">
+                    <form action="{{ route('kelAnggarans.update', $kel_anggaran->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <div class="grid grid-cols-2 gap-4 min-w-full overflow-hidden">

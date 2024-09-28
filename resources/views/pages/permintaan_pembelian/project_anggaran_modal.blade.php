@@ -1,10 +1,10 @@
-<x-modal name="project_modal_anggaran" :show="false">
+<x-modal name="anggaran_modal_permintaan_pembelian" :show="false">
     <div class="p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            Project
+            Project Anggaran
         </h2>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Daftar Project...
+            Daftar Project Anggaran...
         </p>
         {{-- Table Start --}}
         <input id="search" placeholder="Search" name="search"
@@ -34,24 +34,24 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
-                            @forelse ($projects as $project)
+                            @forelse ($anggarans as $anggaran)
                                 <tr>
                                     <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
                                         <p class="whitespace-no-wrap">{{ $loop->iteration }}</p>
                                     </td>
                                     <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
-                                        <p class="whitespace-no-wrap">{{ $project->kode_project }}</p>
+                                        <p class="whitespace-no-wrap">{{ $anggaran->kode_anggaran_project }}</p>
                                     </td>
                                     <td class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
-                                        <p class="whitespace-no-wrap">{{ $project->nama_project }}</p>
+                                        <p class="whitespace-no-wrap">{{ $anggaran->nama_anggaran_project }}</p>
                                     </td>
                                     <td
                                         class="px-5 flex gap-2 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 ">
                                         <!-- Checkmark Button with Click Event -->
                                         <x-primary-button class="p-1" x-data
                                             x-on:click="
-                                        $dispatch('select-project', { id: '{{ $project->kode_project }}', name: '{{ $project->nama_project }}' });
-                                        $dispatch('close-modal', 'project_modal_anggaran');">
+                                        $dispatch('select-anggaran', { id: '{{ $anggaran->kode_anggaran_project }}', name: '{{ $anggaran->nama_anggaran_project }}' });
+                                        $dispatch('close-modal', 'anggaran_modal_permintaan_pembelian');">
                                             <x-eva-checkmark-outline class="w-5 h-5" />
                                         </x-primary-button>
                                     </td>

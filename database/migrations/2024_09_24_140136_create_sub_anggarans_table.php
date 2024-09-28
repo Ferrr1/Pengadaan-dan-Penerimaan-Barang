@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('sub_anggarans', function (Blueprint $table) {
             $table->id();
             $table->foreignId('anggaran_id')->constrained('anggarans')->onDelete('cascade');
+            $table->foreignId('kel_anggaran_id')->constrained('kel_anggarans')->onDelete('cascade');
             $table->string('no_detail', 4)->unique();
             $table->string('kode_anggaran', 6)->unique();
             $table->string('nama_anggaran');
+            $table->string('kel_anggaran');
             $table->foreignId('satuan_id')->constrained('satuans')->onDelete('cascade');
             $table->bigInteger('kuantitas_anggaran');
             $table->bigInteger('harga_anggaran');

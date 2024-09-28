@@ -50,7 +50,7 @@
             </div>
         </form>
         <div class="pt-4 overflow-x">
-            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto">
+            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto w-full">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -96,13 +96,15 @@
                                     <p class="whitespace-no-wrap">{{ $project->tgl_mulai }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                        <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
-                                        <span class="relative">
-                                            {{ $project->status_project === 'aktif' ? 'AKTIF' : 'TIDAK AKTIF' }}
-                                        </span>
-                                    </span>
+                                    {!! $project->status_project === 'aktif'
+                                        ? '<span class="relative text-sm inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
+                                    <span class="relative">AKTIF</span>
+                                    </span>'
+                                        : '<span class="relative text-sm inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
+                                    <span aria-hidden class="absolute inset-0 bg-red-200 rounded-full"></span>
+                                    <span class="relative text-nowrap">TIDAK AKTIF</span>
+                                    </span>' !!}
                                 </td>
                                 <td class="px-5 py-5 flex gap-2 items-center justify-center">
                                     <x-primary-button class="p-2" x-data=""

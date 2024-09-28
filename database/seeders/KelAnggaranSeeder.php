@@ -12,6 +12,27 @@ class KelAnggaranSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $kelanggarans = [
+            [
+                'kode_kel_anggaran' => '0001',
+                'nama_kel_anggaran' => 'Biaya Material',
+            ],
+            [
+                'kode_kel_anggaran' => '0002',
+                'nama_kel_anggaran' => 'Biaya Upah Proyek',
+            ],
+            [
+                'kode_kel_anggaran' => '0003',
+                'nama_kel_anggaran' => 'Biaya Upah Administrasi Proyek',
+            ],
+            [
+                'kode_kel_anggaran' => '0004',
+                'nama_kel_anggaran' => 'Biaya Sub Kontraktor Proyek',
+            ],
+            [
+                'kode_kel_anggaran' => '0005',
+                'nama_kel_anggaran' => 'Biaya Upah Administrasi',
+            ],
+        ];
     }
 }

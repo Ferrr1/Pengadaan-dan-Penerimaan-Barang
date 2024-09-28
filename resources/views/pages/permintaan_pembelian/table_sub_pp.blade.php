@@ -43,7 +43,7 @@
             </div>
         </form>
         <div class="pt-4 overflow-auto">
-            <div class="inline-block shadow rounded-md overflow-x-auto">
+            <div class="inline-block shadow rounded-md overflow-x-auto w-full">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>

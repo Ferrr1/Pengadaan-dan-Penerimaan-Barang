@@ -11,7 +11,7 @@ class UpdatePermintaan_PembelianRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

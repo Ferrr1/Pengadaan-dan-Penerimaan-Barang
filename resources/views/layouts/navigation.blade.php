@@ -10,7 +10,7 @@
                 <x-akar-dashboard class="w-5" /> {{ __('Dashboard') }}
             </div>
         </x-nav-link>
-        <x-nav-link onclick="toggleSubmenu(this)" class="flex justify-between items-center mb-4">
+        <x-nav-link onclick="toggleSubmenu(this)" class="flex justify-between items-center cursor-pointer mb-4">
             <div class="flex items-center gap-2">
                 <x-eva-list-outline class="w-5" />{{ __('Administrasi') }}
             </div>
@@ -24,14 +24,14 @@
                         <x-elemplus-money class="w-5" />{{ __('APP') }}
                     </div>
                 </x-nav-link>
-                <x-nav-link>
+                <x-nav-link :href="route('permintaanPembelians.index')" :active="request()->routeIs('permintaanPembelians.index')">
                     <div class="flex items-center gap-2">
                         <x-fluentui-box-multiple-arrow-left-20-o class="w-5" />{{ __('PP') }}
                     </div>
                 </x-nav-link>
             </div>
         </ul>
-        <x-nav-link onclick="toggleSubmenu(this)" class="flex justify-between items-center mb-4">
+        <x-nav-link onclick="toggleSubmenu(this)" class="flex justify-between items-center cursor-pointer mb-4">
             <div class="flex items-center gap-2">
                 <x-eva-list-outline class="w-5" />{{ __('Data') }}
             </div>

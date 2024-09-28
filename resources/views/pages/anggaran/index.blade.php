@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="__('- Anggaran Pelaksanaan Proyek')">
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Anggaran Pelaksanaan Proyek - Daftar Anggaran') }}
@@ -25,20 +25,11 @@
                                             name="project" x-model="namaProject" readonly required />
                                         <input type="hidden" name="kode_anggaran_project" x-model="kodeProject" />
                                         <input type="hidden" name="nama_anggaran_project" x-model="namaProject" />
-                                        <x-input-label class="mt-2" for="kel_anggaran_project" :value="__('Kelompok Anggaran')" />
-                                        <select name="kel_anggaran_project" id="kel_anggaran_project"
-                                            @forelse ($kel_anggarans as $kel_anggaran) class="appearance-none dark:bg-gray-900 mt-1 rounded-l rounded-md border inline-block w-full bg-white border-gray-700 dark:text-white text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                        required>
-                                        <option value="{{ $kel_anggaran->nama_kel_anggaran }}">{{ $kel_anggaran->nama_kel_anggaran }}</option>
-                                        @empty
-                                        <option>Tidak ada Kelompok Anggaran</option> @endforelse
-                                            </select>
-                                            <x-input-error :messages="$errors->get('kel_anggaran_project')" class="mt-2" />
-
-                                            <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-1"
-                                                x-on:click="$dispatch('open-modal', 'project_modal_anggaran')">
-                                                <x-eva-search-outline class="w-4" />
-                                            </x-secondary-button>
+                                        <x-input-error :messages="$errors->get('kel_anggaran_project')" class="mt-2" />
+                                        <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-1"
+                                            x-on:click="$dispatch('open-modal', 'project_modal_anggaran')">
+                                            <x-eva-search-outline class="w-4" />
+                                        </x-secondary-button>
                                     </div>
                                 </div>
                                 <x-input-error :messages="$errors->get('satuan')" class="mt-2" />

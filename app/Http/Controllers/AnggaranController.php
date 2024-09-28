@@ -64,27 +64,20 @@ class AnggaranController extends Controller
             $validation = $request->validate([
                 'kode_anggaran_project' => 'required|exists:projects,kode_project',
                 'nama_anggaran_project' => 'required|exists:projects,nama_project',
-                'kel_anggaran_project' => 'required|exists:kel_anggarans,nama_kel_anggaran',
             ]);
             $existingAnggaran = Anggaran::where('kode_anggaran_project', $validation['kode_anggaran_project'])->first();
             if ($existingAnggaran) {
-                return redirect()->back()->with([
-                    notyf()->position('y', 'top')->error('Anggaran project sudah ada. Silakan gunakan kode anggaran lain.')
-                ]);
+                throw new \Exception('Sudah ada anggaran untuk proyek ini.');
             }
             $project = Project::where('kode_project', $validation['kode_anggaran_project'])->firstOrFail();
-            $kel_anggaran = Kel_Anggaran::where('nama_kel_anggaran', $validation['kel_anggaran_project'])->firstOrFail();
-            // dd($project, $kel_anggaran, $validation);
             $validation['project_id'] =  $project->id;
-            $validation['kel_anggaran_id'] =  $kel_anggaran->id;
-            // dd($validation);
             Anggaran::create($validation);
 
             return redirect()->route('anggarans.index')->with([
                 notyf()->position('y', 'top')->success('Anggaran berhasil dibuat'),
             ]);
         } catch (\Exception $e) {
-            return redirect()->back()->with([notyf()->position('y', 'top')->error('Anggaran gagal dibuat. Silakan coba lagi.')]);
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Anggaran gagal dibuat. Silakan coba lagi.' . ' ' . $e->getMessage())]);
         }
     }
 
@@ -95,6 +88,7 @@ class AnggaranController extends Controller
     {
         $queryAnggaran = $anggaran->subAnggarans();
         $querySatuan = Satuan::query();
+        $queryKelAnggaran = Kel_Anggaran::query();
         $sortField = $request->input("sort_field", 'created_at');
         $sortDirection = $request->input("sort_direction", "desc");
         $search = $request->input('search', '');
@@ -103,7 +97,8 @@ class AnggaranController extends Controller
         $lastNoDetailAnggaran = SubAnggaran::orderBy('no_detail', 'desc')->first();
         $nextKodeAnggaran = $lastKodeAnggaran ? str_pad((int)$lastKodeAnggaran->kode_anggaran + 1, 6, '0', STR_PAD_LEFT) : '000001';
         $nextNoDetailAnggaran = $lastNoDetailAnggaran ? str_pad((int)$lastNoDetailAnggaran->no_detail + 1, 4, '0', STR_PAD_LEFT) : '0001';
-
+        $total_harga_satuan = SubAnggaran::sum('harga_anggaran');
+        $total_jumlah_harga = SubAnggaran::sum('total_anggaran');
         if ($search) {
             $queryAnggaran->where("no_detail", "like", "%" . $search . "%")
                 ->orWhere("nama_anggaran", "like", "%" . $search . "%");
@@ -116,6 +111,7 @@ class AnggaranController extends Controller
             $perPage = (int) $perPage;
         }
         $projects = $anggaran->project;
+        $kel_anggarans = $queryKelAnggaran->orderBy($sortField, $sortDirection)->get();
         $satuans = $querySatuan->orderBy($sortField, $sortDirection)->get();
         $subAnggarans = $queryAnggaran->orderBy($sortField, $sortDirection)
             ->paginate(10)
@@ -124,11 +120,14 @@ class AnggaranController extends Controller
             "anggaran" => $anggaran,
             "subAnggarans" => $subAnggarans,
             "projects" => $projects,
+            "kel_anggarans" => $kel_anggarans,
             "sortField" => $sortField,
             "sortDirection" => $sortDirection,
             "perPage" => $perPage,
             "search" => $search,
             "nextKodeAnggaran" => $nextKodeAnggaran,
+            "total_jumlah_harga" => $total_jumlah_harga,
+            "total_harga_satuan" => $total_harga_satuan,
             "satuans" => $satuans,
             "nextNoDetailAnggaran" => $nextNoDetailAnggaran
         ]);

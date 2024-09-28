@@ -1,13 +1,13 @@
 <div class="p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-        Anggaran
+        Permintaan Pembelian
     </h2>
     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-        Daftar Anggaran...
+        Daftar Permintaan Pembelian...
     </p>
     {{-- Table Start --}}
     <div>
-        <form action="{{ route('anggarans.index') }}" method="GET">
+        <form action="{{ route('permintaanPembelians.index') }}" method="GET">
             <div class="my-2 flex sm:flex-row flex-col">
                 <div class="flex flex-row mb-1 sm:mb-0">
                     <div class="relative">
@@ -37,7 +37,7 @@
             </div>
         </form>
         <div class="pt-4 overflow-auto">
-            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto">
+            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto w-full">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -47,15 +47,15 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Kode Proyek
+                                Nomor PP
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Nama Proyek
+                                Tanggal PP
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Kelompok Anggaran
+                                TTD
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
@@ -64,35 +64,37 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
-                        @forelse ($anggarans as $anggaran)
+                        @forelse ($permintaan_pembelians as $permintaan_pembelian)
                             <tr class="text-sm border-b-2 border-gray-200 dark:border-gray-700">
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $loop->iteration }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $anggaran->kode_anggaran_project }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $permintaan_pembelian->nomor_pp }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $anggaran->nama_anggaran_project }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $permintaan_pembelian->tgl_pp }}</p>
                                 </td>
                                 <td class="px-5 py-5">
                                     <span
                                         class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
                                         <span aria-hidden class="absolute inset-0 bg-yellow-200 rounded-full"></span>
                                         <span class="relative">
-                                            {{ $anggaran->kel_anggaran_project }}
+                                            {{ $permintaan_pembelian->tandatangan_pp }}
                                         </span>
                                     </span>
                                 </td>
-                                <td class="px-5 py-5 flex gap-2 items-center justify-center">
-                                    <a href="{{ route('anggarans.show', $anggaran->id) }}">
+                                <td class="px-5 py-5 flex gap-2 items-center justify-start">
+                                    <a href="{{ route('permintaanPembelians.show', $permintaan_pembelian->id) }}">
                                         <x-primary-button class="p-2">
                                             <x-css-insert-after-r class="w-5 h-5" />
                                         </x-primary-button>
                                     </a>
                                     {{-- Delete Button Modal --}}
                                     <x-danger-button type="button" class="p-2" x-data=""
-                                        x-on:click="$dispatch('open-modal', `delete_modal_anggaran{{ $anggaran->id }}}`)">
+                                        x-on:click="$dispatch('open-modal', `delete_modal_permintaan_pembelian{{ $permintaan_pembelian->id }}}`)">
                                         <x-eva-trash-outline class="w-5 h-5" />
                                     </x-danger-button>
                                 </td>
@@ -101,7 +103,7 @@
                             <tr>
                                 <td colspan="6"
                                     class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 text-center">
-                                    Tidak ada data anggaran yang tersedia.
+                                    Tidak ada data permintaan pembelian yang tersedia.
                                 </td>
                             </tr>
                         @endforelse
@@ -111,8 +113,8 @@
             <!-- Pagination Links -->
             <div class="d-flex justify-content-between">
                 <div>
-                    @if ($anggarans instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                        {{ $anggarans->links() }}
+                    @if ($permintaan_pembelians instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                        {{ $permintaan_pembelians->links() }}
                     @endif
                 </div>
             </div>

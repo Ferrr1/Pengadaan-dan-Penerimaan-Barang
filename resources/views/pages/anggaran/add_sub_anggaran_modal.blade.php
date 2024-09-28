@@ -56,6 +56,22 @@
                                     name="harga_anggaran" />
                             </div>
                         </div>
+                        <div class="grid grid-cols-1 gap-4 min-w-full overflow-hidden">
+                            <div class="p-1">
+                                <x-input-label for="kel_anggaran" :value="__('Kelompok Anggaran')" />
+                                <select name="kel_anggaran" id="kel_anggaran"
+                                    class="appearance-none dark:bg-gray-900 mt-1 rounded-l rounded-md border inline-block w-full bg-white border-gray-700 dark:text-white text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    required>
+                                    @forelse ($kel_anggarans as $kel_anggaran)
+                                        <option value="{{ $kel_anggaran->nama_kel_anggaran }}">
+                                            {{ $kel_anggaran->nama_kel_anggaran }}</option>
+                                    @empty
+                                        <option readonly>
+                                            Tidak ada data kelompok anggaran</option>
+                                    @endforelse
+                                </select>
+                            </div>
+                        </div>
                         <x-primary-button class="px-4 py-2 ml-1 mt-3">Simpan</x-primary-button>
                     </form>
                 </div>

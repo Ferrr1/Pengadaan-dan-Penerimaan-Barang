@@ -37,7 +37,7 @@
             </div>
         </form>
         <div class="pt-4 overflow-auto">
-            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto">
+            <div class="inline-block min-w-full shadow rounded-md overflow-x-auto w-full">
                 <table class="min-w-full leading-normal">
                     <thead class="dark:bg-gray-900 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
@@ -52,10 +52,6 @@
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
                                 Nama Proyek
-                            </th>
-                            <th
-                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Kelompok Anggaran
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
@@ -75,16 +71,7 @@
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $anggaran->nama_anggaran_project }}</p>
                                 </td>
-                                <td class="px-5 py-5">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                        <span aria-hidden class="absolute inset-0 bg-yellow-200 rounded-full"></span>
-                                        <span class="relative">
-                                            {{ $anggaran->kel_anggaran_project }}
-                                        </span>
-                                    </span>
-                                </td>
-                                <td class="px-5 py-5 flex gap-2 items-center justify-center">
+                                <td class="px-5 py-5 flex gap-2 items-center justify-start">
                                     <a href="{{ route('anggarans.show', $anggaran->id) }}">
                                         <x-primary-button class="p-2">
                                             <x-css-insert-after-r class="w-5 h-5" />

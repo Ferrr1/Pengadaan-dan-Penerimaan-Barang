@@ -14,8 +14,12 @@ class Kel_Anggaran extends Model
         'nama_kel_anggaran',
     ];
 
-    public function anggaran()
+    // public function anggaran()
+    // {
+    //     return $this->belongsTo(Anggaran::class);
+    // }
+    public function subAnggaran()
     {
-        return $this->belongsTo(Anggaran::class);
+        return $this->belongsTo(SubAnggaran::class);
     }
 }
