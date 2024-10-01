@@ -6,7 +6,7 @@
             </h2>
             {{-- Table Start --}}
             <div>
-                <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                <div class="p-4 overflow-x-auto">
                     <form action="{{ route('suppliers.update', $rekanan->id) }}" method="POST">
                         @csrf
                         @method('PUT')

@@ -2,14 +2,17 @@
     <div class="flex justify-between">
         <div>
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Sub Anggaran
+                Sub Permintaan
             </h2>
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Daftar Sub Anggaran...
+                Daftar Sub Permintaan...
             </p>
         </div>
-        <x-primary-button x-data="" x-on:click="$dispatch('open-modal', `sub_anggaran_modal`)"
-            class="mt-4 px-4 py-2">Tambah Sub Anggaran</x-primary-button>
+        <div class="flex gap-2">
+            <x-secondary-button class="mt-4 px-4 py-2">Cetak Laporan</x-secondary-button>
+            <x-primary-button x-data="" x-on:click="$dispatch('open-modal', `sub_pp_modal`)"
+                class="mt-4 px-4 py-2">Tambah Sub Permintaan</x-primary-button>
+        </div>
     </div>
     {{-- Table Start --}}
     <div>
@@ -53,11 +56,7 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                No Detail
-                            </th>
-                            <th
-                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Kode Anggaran
+                                No Detail Anggaran
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
@@ -65,11 +64,23 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Satuan
+                                Kode Barang
+                            </th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
+                                Nama Barang
+                            </th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
+                                Spesifikasi
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
                                 Kuantitas
+                            </th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
+                                Satuan
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
@@ -81,68 +92,109 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
+                                Keterangan
+                            </th>
+                            <th
+                                class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
                                 Aksi
                             </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
-                        @forelse ($subAnggarans as $subAnggaran)
+                        @forelse ($subPermintaanPembelians as $subPermintaanPembelian)
                             <tr class="text-sm border-b-2 border-gray-200 dark:border-gray-700">
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">{{ $loop->iteration }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->no_detail }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $subPermintaanPembelian->subAnggaran->no_detail }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->kode_anggaran }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $subPermintaanPembelian->produk->nama_produk }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->nama_anggaran }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $subPermintaanPembelian->produk->kode_produk }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->satuan->nama_satuan }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $subPermintaanPembelian->produk->nama_produk }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ formatAngka($subAnggaran->kuantitas_anggaran) }}
+                                    <p class="whitespace-no-wrap">
+                                        {{ $subPermintaanPembelian->spesifikasi_sub_permintaan_pembelian }}</p>
+                                </td>
+                                <td class="px-5 py-5">
+                                    <p class="whitespace-no-wrap">
+                                        {{ $subPermintaanPembelian->kuantitas_sub_permintaan_pembelian }}</p>
+                                </td>
+                                <td class="px-5 py-5">
+                                    <span
+                                        class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
+                                        <span class="relative">
+                                            {{ $subPermintaanPembelian->produk->satuan->singkatan_satuan }}
+                                        </span>
+                                    </span>
+                                </td>
+                                <td class="px-5 py-5">
+                                    <p class="whitespace-no-wrap">
+                                        {{ formatRupiah($subPermintaanPembelian->harga_sub_permintaan_pembelian) }}
                                     </p>
                                 </td>
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap text-nowrap">
-                                        {{ formatRupiah($subAnggaran->harga_anggaran) }}</p>
+                                        {{ formatRupiah($subPermintaanPembelian->total_sub_permintaan_pembelian) }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap text-nowrap">
-                                        {{ formatRupiah($subAnggaran->total_anggaran) }}</p>
+                                    <p class="whitespace-nowrap text-nowrap">
+                                        {{ $subPermintaanPembelian->keterangan_sub_permintaan_pembelian ?? 'Tidak ada keterangan' }}
+                                    </p>
                                 </td>
                                 <td class="px-5 py-5 flex gap-2 items-center justify-center">
                                     <x-primary-button type="button" class="p-2" x-data=""
-                                        x-on:click="$dispatch('open-modal', `edit_modal_subAnggaran{{ $subAnggaran->id }}}`)">
+                                        x-on:click="$dispatch('open-modal', `edit_modal_sub_pp{{ $subPermintaanPembelian->id }}}`)">
                                         <x-eva-edit-2-outline class="w-5 h-5" />
                                     </x-primary-button>
                                     {{-- Delete Button Modal --}}
                                     <x-danger-button type="button" class="p-2" x-data=""
-                                        x-on:click="$dispatch('open-modal', `delete_modal_subAnggaran{{ $subAnggaran->id }}}`)">
+                                        x-on:click="$dispatch('open-modal', `delete_modal_sub_pp{{ $subPermintaanPembelian->id }}}`)">
                                         <x-eva-trash-outline class="w-5 h-5" />
                                     </x-danger-button>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="9"
+                                <td colspan="12"
                                     class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 text-center">
-                                    Tidak ada data sub anggaran yang tersedia.
+                                    Tidak ada data sub permintaan pembelian yang tersedia.
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+            <div class="p-1 flex justify-end">
+                <div class="flex gap-4">
+                    <div>
+                        <x-input-label :value="__('Sub Total PP')" />
+                        <x-text-input class="block mt-1 w-full" type="text"
+                            value="{{ formatRupiah($total_harga_satuan) }}" disabled />
+                    </div>
+                    <div>
+                        <x-input-label :value="__('Total PP')" />
+                        <x-text-input class="block mt-1 w-full" type="text"
+                            value="{{ formatRupiah($total_jumlah_harga) }}" disabled />
+                    </div>
+                </div>
+            </div>
             <!-- Pagination Links -->
             <div class="d-flex justify-content-between">
                 <div>
-                    @if ($subAnggarans instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                        {{ $subAnggarans->links() }}
+                    @if ($subPermintaanPembelians instanceof \Illuminate\Pagination\LengthAwarePaginator)
+                        {{ $subPermintaanPembelians->links() }}
                     @endif
                 </div>
             </div>

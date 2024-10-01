@@ -12,10 +12,7 @@ class SubAnggaran extends Model
         'anggaran_id',
         'kel_anggaran_id',
         'no_detail',
-        'kode_anggaran',
-        'nama_anggaran',
-        'kel_anggaran',
-        'satuan_id',
+        'produk_id',
         'kuantitas_anggaran',
         'harga_anggaran',
         'total_anggaran',
@@ -23,16 +20,21 @@ class SubAnggaran extends Model
 
     public function anggaran()
     {
-        return $this->belongsTo(Anggaran::class);
+        return $this->belongsTo(Anggaran::class, 'anggaran_id');
     }
 
     public function kelAnggaran()
     {
-        return $this->hasOne(Kel_Anggaran::class);
+        return $this->belongsTo(Kel_Anggaran::class, 'kel_anggaran_id');
     }
 
-    public function satuan()
+    public function subPermintaanPembelians()
     {
-        return $this->belongsTo(Satuan::class);
+        return $this->hasOne(SubPermintaan_Pembelian::class, 'sub_anggaran_id');
+    }
+
+    public function produks()
+    {
+        return $this->belongsTo(Produk::class, 'produk_id');
     }
 }

@@ -6,7 +6,11 @@ use App\Models\Permintaan_Pembelian;
 use App\Http\Requests\StorePermintaan_PembelianRequest;
 use App\Http\Requests\UpdatePermintaan_PembelianRequest;
 use App\Models\Anggaran;
+use App\Models\Kel_Anggaran;
+use App\Models\Produk;
 use App\Models\Project;
+use App\Models\Satuan;
+use App\Models\SubPermintaan_Pembelian;
 use Illuminate\Http\Request;
 
 class PermintaanPembelianController extends Controller
@@ -16,8 +20,8 @@ class PermintaanPembelianController extends Controller
      */
     public function index(Request $request)
     {
-        $queryPermintaanPembelian = Permintaan_Pembelian::query();
-        $queryAnggaran = Anggaran::query();
+        $queryPermintaanPembelian = Permintaan_Pembelian::query()->with('anggaran');
+        $queryAnggaran = Anggaran::query()->with('project');
         $sortField = $request->input("sort_field", 'created_at');
         $sortDirection = $request->input("sort_direction", "desc");
         $perPage = $request->input("perPage", 10);
@@ -28,7 +32,7 @@ class PermintaanPembelianController extends Controller
 
         // Fungsi untuk generate kode PP
         $generatePPCode = function () use ($currentMonth, $currentYear) {
-            $queryAnggaran = Anggaran::query();
+            $queryAnggaran = Anggaran::query()->with('project');
             $lastCode = Permintaan_Pembelian::whereRaw('SUBSTRING_INDEX(nomor_pp, "/", -1) = ?', ["{$currentMonth}.{$currentYear}"])
                 ->orderBy('id', 'desc')
                 ->first();
@@ -40,16 +44,16 @@ class PermintaanPembelianController extends Controller
                 $newCounter = 1; // Reset to 1 if it's a new month or no previous entries
             }
 
+            $projectAnggaran = $queryAnggaran->where('id', request('anggaran_id'))->first();
+            $projectCode = $projectAnggaran && $projectAnggaran->project ? $projectAnggaran->project->kode_project : 'XXXXX';
             $formattedCounter = str_pad($newCounter, 5, '0', STR_PAD_LEFT);
-            $projectAnggaran = $queryAnggaran->where('kode_anggaran_project', request('kode_anggaran_project'))->first();
-            $projectCode = $projectAnggaran ? $projectAnggaran->kode_anggaran_project : 'XXXXX';
             return "{$formattedCounter}/PP/{$projectCode}/{$currentMonth}.{$currentYear}";
         };
         $newPPCode = $generatePPCode();
 
         if ($search) {
-            $queryPermintaanPembelian->where("kode_project", "like", "%" . $search . "%")
-                ->orWhere("nama_project", "like", "%" . $search . "%");
+            // dd($queryPermintaanPembelian);
+            $queryPermintaanPembelian->where("nomor_pp", "like", "%" . $search . "%");
         }
 
         if ($perPage === 'all') {
@@ -82,15 +86,24 @@ class PermintaanPembelianController extends Controller
             $validation = $request->validate([
                 'nomor_pp' => 'required|string',
                 'tgl_pp' => 'required|date',
-                'tandatangan_pp' => 'required',
+                'tandatangan_pp' => 'required|array',
+                'tandatangan_pp.*.tanda_tangan' => 'required|string',
+                'tandatangan_pp.*.posisi_jabatan' => 'required|string',
             ]);
-            $kodeAnggaran = $request->input('kode_anggaran');
-            $anggaranpembelian = Anggaran::where('kode_anggaran_project', $kodeAnggaran)->firstOrFail();
 
+            $anggaranpembelian = Anggaran::where('project_id', $request->input('anggaran_id'))->firstOrFail();
             $existingPermintaan = Permintaan_Pembelian::where('anggaran_id', $anggaranpembelian->id)->first();
             if ($existingPermintaan) {
                 throw new \Exception('Sudah ada permintaan pembelian untuk proyek ini.');
             }
+            $tandaTanganData = [];
+            foreach ($request->input('tandatangan_pp') as $item) {
+                $tandaTanganData[] = [
+                    'tanda_tangan' => $item['tanda_tangan'],
+                    'posisi_jabatan' => $item['posisi_jabatan'],
+                ];
+            }
+            $validation['tandatangan_pp'] = $tandaTanganData;
             $validation['anggaran_id'] =  $anggaranpembelian->id;
             Permintaan_Pembelian::create($validation);
 
@@ -105,9 +118,52 @@ class PermintaanPembelianController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Permintaan_Pembelian $permintaan_Pembelian)
+    public function show($id, Request $request)
     {
-        //
+        $permintaan_Pembelian = Permintaan_Pembelian::with(['anggaran', 'subPermintaanPembelians.subAnggaran', 'subPermintaanPembelians.produk'])->findOrFail($id);
+        $queryPermintaanPembelian = $permintaan_Pembelian->subPermintaanPembelians();
+        $queryProduk = Produk::query();
+
+        $sortField = $request->input("sort_field", 'created_at');
+        $sortDirection = $request->input("sort_direction", "desc");
+        $search = $request->input('search', '');
+        $perPage = $request->input("perPage", 10);
+
+        $total_harga_satuan = $queryPermintaanPembelian->sum('harga_sub_permintaan_pembelian');
+        $total_jumlah_harga = $queryPermintaanPembelian->sum('total_sub_permintaan_pembelian');
+
+        if ($search) {
+            $queryPermintaanPembelian->WhereHas('produk', function ($q) use ($search) {
+                $q->where("kode_produk", "like", "%" . $search . "%")->orWhere("nama_produk", "like", "%" . $search . "%");
+            });
+        }
+
+        $subPermintaanPembelians = $queryPermintaanPembelian->orderBy($sortField, $sortDirection);
+
+        if ($perPage !== 'all') {
+            $subPermintaanPembelians = $subPermintaanPembelians->paginate($perPage)->onEachSide(1);
+        } else {
+            $subPermintaanPembelians = $subPermintaanPembelians->get();
+        }
+
+        $anggaranpembelians = $permintaan_Pembelian->anggaran;
+        $produks = $queryProduk->orderBy($sortField, $sortDirection)->get();
+
+        $subAnggarans = $permintaan_Pembelian->anggaran->subAnggarans;
+
+        return view("pages.permintaan_pembelian.show_sub_pp")->with([
+            "permintaan_Pembelian" => $permintaan_Pembelian,
+            "subPermintaanPembelians" => $subPermintaanPembelians,
+            "anggaranpembelians" => $anggaranpembelians,
+            "sortField" => $sortField,
+            "sortDirection" => $sortDirection,
+            "perPage" => $perPage,
+            "search" => $search,
+            "total_jumlah_harga" => $total_jumlah_harga,
+            "total_harga_satuan" => $total_harga_satuan,
+            "produks" => $produks,
+            "subAnggarans" => $subAnggarans
+        ]);
     }
 
     /**

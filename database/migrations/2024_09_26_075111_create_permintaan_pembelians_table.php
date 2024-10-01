@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('anggaran_id')->constrained('anggarans')->onDelete('cascade');
             $table->string('nomor_pp')->unique();
             $table->date('tgl_pp');
-            $table->string('tandatangan_pp');
+            $table->json('tandatangan_pp');
             $table->timestamps();
         });
     }

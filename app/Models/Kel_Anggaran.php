@@ -18,8 +18,8 @@ class Kel_Anggaran extends Model
     // {
     //     return $this->belongsTo(Anggaran::class);
     // }
-    public function subAnggaran()
+    public function subAnggarans()
     {
-        return $this->belongsTo(SubAnggaran::class);
+        return $this->hasMany(SubAnggaran::class, 'kel_anggaran_id');
     }
 }

@@ -4,6 +4,7 @@
     "scripts": {
         "dev": "vite",
         "watch": "vite --host=192.168.18.5",
+        "watch2": "vite --host=172.16.2.111",
         "build": "vite build"
     },
     "devDependencies": {

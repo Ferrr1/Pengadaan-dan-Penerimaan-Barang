@@ -8,7 +8,7 @@
                 permintaan ini?</p>
             {{-- Table Start --}}
             <div class="flex justify-end">
-                <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+                <div class="p-4 overflow-x-auto">
                     <form action="{{ route('permintaanPembelians.destroy', $permintaan_pembelian->id) }}" method="POST">
                         @csrf
                         @method('DELETE')

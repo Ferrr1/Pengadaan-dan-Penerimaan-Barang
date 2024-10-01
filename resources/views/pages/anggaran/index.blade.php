@@ -16,15 +16,14 @@
                             <div>
                                 <x-input-label for="kode" :value="__('Kode Proyek')" />
                                 <div class="relative">
-                                    <div x-data="{ kodeProject: '', namaProject: '' }"
-                                        @select-project.window="kodeProject = $event.detail.id; namaProject = $event.detail.name">
+                                    <div x-data="{ idProject: '', kodeProject: '', namaProject: '' }"
+                                        @select-project.window="idProject = $event.detail.id; kodeProject = $event.detail.kode; namaProject = $event.detail.name">
                                         <x-text-input id="project" class="block mt-1 w-full" type="text"
                                             name="project" x-model="kodeProject" readonly required />
                                         <x-input-label for="kode" class="mt-2" :value="__('Nama Proyek')" />
                                         <x-text-input id="project" class="block mt-1 w-full" type="text"
                                             name="project" x-model="namaProject" readonly required />
-                                        <input type="hidden" name="kode_anggaran_project" x-model="kodeProject" />
-                                        <input type="hidden" name="nama_anggaran_project" x-model="namaProject" />
+                                        <input type="hidden" name="project_id" x-model="idProject" />
                                         <x-input-error :messages="$errors->get('kel_anggaran_project')" class="mt-2" />
                                         <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-1"
                                             x-on:click="$dispatch('open-modal', 'project_modal_anggaran')">

@@ -16,9 +16,18 @@ class Permintaan_Pembelian extends Model
         'tgl_pp',
         'tandatangan_pp',
     ];
+    protected $casts = [
+        'tandatangan_pp' => 'array',
+    ];
+
 
     public function anggaran()
     {
-        return $this->belongsTo(Anggaran::class);
+        return $this->belongsTo(Anggaran::class, 'anggaran_id');
+    }
+
+    public function subPermintaanPembelians()
+    {
+        return $this->hasMany(SubPermintaan_Pembelian::class, 'permintaanpembelian_id');
     }
 }

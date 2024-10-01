@@ -9,8 +9,10 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RekananController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SubAnggaranController;
+use App\Http\Controllers\SubPermintaanPembelianController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
+use App\Models\SubPermintaan_Pembelian;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -42,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('transaksis', TransaksiController::class);
     // Permintaan Pembelian
     Route::resource('permintaanPembelians', PermintaanPembelianController::class);
+    // Sub Permintaan Pembelian
+    Route::resource('subPermintaanPembelians', SubPermintaanPembelianController::class)->except(['store']);
+    Route::post('/subPermintaanPembelians/{subPermintaanPembelian}', [SubPermintaanPembelianController::class, 'store'])->name('subPermintaanPembelians.store');
     // Satuan
     Route::resource('satuans', SatuanController::class);
     // Projects

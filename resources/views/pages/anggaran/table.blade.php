@@ -66,10 +66,10 @@
                                     <p class="whitespace-no-wrap">{{ $loop->iteration }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $anggaran->kode_anggaran_project }}</p>
+                                    <p class="whitespace-no-wrap">{{ $anggaran->project->kode_project }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $anggaran->nama_anggaran_project }}</p>
+                                    <p class="whitespace-no-wrap">{{ $anggaran->project->nama_project }}</p>
                                 </td>
                                 <td class="px-5 py-5 flex gap-2 items-center justify-start">
                                     <a href="{{ route('anggarans.show', $anggaran->id) }}">

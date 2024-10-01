@@ -6,6 +6,7 @@ use App\Models\Anggaran;
 use App\Http\Requests\StoreAnggaranRequest;
 use App\Http\Requests\UpdateAnggaranRequest;
 use App\Models\Kel_Anggaran;
+use App\Models\Produk;
 use App\Models\Project;
 use App\Models\Satuan;
 use App\Models\SubAnggaran;
@@ -19,7 +20,7 @@ class AnggaranController extends Controller
      */
     public function index(Request $request)
     {
-        $queryAnggaran = Anggaran::query();
+        $queryAnggaran = Anggaran::query()->with('project');
         $queryProject = Project::query();
         $queryKelAnggaran = Kel_Anggaran::query();
         $sortField = $request->input("sort_field", 'created_at');
@@ -61,16 +62,12 @@ class AnggaranController extends Controller
     public function store(StoreAnggaranRequest $request)
     {
         try {
-            $validation = $request->validate([
-                'kode_anggaran_project' => 'required|exists:projects,kode_project',
-                'nama_anggaran_project' => 'required|exists:projects,nama_project',
-            ]);
-            $existingAnggaran = Anggaran::where('kode_anggaran_project', $validation['kode_anggaran_project'])->first();
+            $project = Project::where('id', $request->input('project_id'))->firstOrFail();
+            $existingAnggaran = Anggaran::where('project_id', $project->id)->first();
             if ($existingAnggaran) {
                 throw new \Exception('Sudah ada anggaran untuk proyek ini.');
             }
-            $project = Project::where('kode_project', $validation['kode_anggaran_project'])->firstOrFail();
-            $validation['project_id'] =  $project->id;
+            $validation =  $request->all();
             Anggaran::create($validation);
 
             return redirect()->route('anggarans.index')->with([
@@ -87,18 +84,16 @@ class AnggaranController extends Controller
     public function show(Request $request, Anggaran $anggaran)
     {
         $queryAnggaran = $anggaran->subAnggarans();
-        $querySatuan = Satuan::query();
+        $queryProduk = Produk::query();
         $queryKelAnggaran = Kel_Anggaran::query();
         $sortField = $request->input("sort_field", 'created_at');
         $sortDirection = $request->input("sort_direction", "desc");
         $search = $request->input('search', '');
         $perPage = $request->input("perPage", 10);
-        $lastKodeAnggaran = SubAnggaran::orderBy('kode_anggaran', 'desc')->first();
         $lastNoDetailAnggaran = SubAnggaran::orderBy('no_detail', 'desc')->first();
-        $nextKodeAnggaran = $lastKodeAnggaran ? str_pad((int)$lastKodeAnggaran->kode_anggaran + 1, 6, '0', STR_PAD_LEFT) : '000001';
         $nextNoDetailAnggaran = $lastNoDetailAnggaran ? str_pad((int)$lastNoDetailAnggaran->no_detail + 1, 4, '0', STR_PAD_LEFT) : '0001';
-        $total_harga_satuan = SubAnggaran::sum('harga_anggaran');
-        $total_jumlah_harga = SubAnggaran::sum('total_anggaran');
+        $total_harga_satuan = $queryAnggaran->sum('harga_anggaran');
+        $total_jumlah_harga = $queryAnggaran->sum('total_anggaran');
         if ($search) {
             $queryAnggaran->where("no_detail", "like", "%" . $search . "%")
                 ->orWhere("nama_anggaran", "like", "%" . $search . "%");
@@ -112,7 +107,7 @@ class AnggaranController extends Controller
         }
         $projects = $anggaran->project;
         $kel_anggarans = $queryKelAnggaran->orderBy($sortField, $sortDirection)->get();
-        $satuans = $querySatuan->orderBy($sortField, $sortDirection)->get();
+        $produks = $queryProduk->orderBy($sortField, $sortDirection)->get();
         $subAnggarans = $queryAnggaran->orderBy($sortField, $sortDirection)
             ->paginate(10)
             ->onEachSide(1);
@@ -125,10 +120,9 @@ class AnggaranController extends Controller
             "sortDirection" => $sortDirection,
             "perPage" => $perPage,
             "search" => $search,
-            "nextKodeAnggaran" => $nextKodeAnggaran,
             "total_jumlah_harga" => $total_jumlah_harga,
             "total_harga_satuan" => $total_harga_satuan,
-            "satuans" => $satuans,
+            "produks" => $produks,
             "nextNoDetailAnggaran" => $nextNoDetailAnggaran
         ]);
     }

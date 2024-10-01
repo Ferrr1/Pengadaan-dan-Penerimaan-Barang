@@ -51,11 +51,11 @@
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                Tanggal PP
+                                Keperluan Proyek
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
-                                TTD
+                                Tanggal PP
                             </th>
                             <th
                                 class="px-5 py-3 border-b-2 border-gray-200 dark:border-gray-700 text-left text-xs font-semibold uppercase tracking-wider">
@@ -75,16 +75,11 @@
                                 </td>
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">
-                                        {{ $permintaan_pembelian->tgl_pp }}</p>
+                                        {{ $permintaan_pembelian->anggaran->project->nama_project }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <span
-                                        class="relative inline-block px-3 py-1 font-semibold text-gray-900 leading-tight">
-                                        <span aria-hidden class="absolute inset-0 bg-yellow-200 rounded-full"></span>
-                                        <span class="relative">
-                                            {{ $permintaan_pembelian->tandatangan_pp }}
-                                        </span>
-                                    </span>
+                                    <p class="whitespace-no-wrap">
+                                        {{ $permintaan_pembelian->tgl_pp }}</p>
                                 </td>
                                 <td class="px-5 py-5 flex gap-2 items-center justify-start">
                                     <a href="{{ route('permintaanPembelians.show', $permintaan_pembelian->id) }}">

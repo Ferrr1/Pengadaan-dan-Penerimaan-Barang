@@ -11,21 +11,12 @@ class Anggaran extends Model
 
     protected $fillable = [
         'project_id',
-        // 'kel_anggaran_id',
-        'kode_anggaran_project',
-        'nama_anggaran_project',
-        // 'kel_anggaran_project',
     ];
 
     public function project()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id');
     }
-
-    // public function kelAnggaran()
-    // {
-    //     return $this->hasOne(Kel_Anggaran::class);
-    // }
 
     public function subAnggarans()
     {
@@ -34,6 +25,6 @@ class Anggaran extends Model
 
     public function permintaanPembelians()
     {
-        return $this->hasMany(Permintaan_Pembelian::class);
+        return $this->hasOne(Permintaan_Pembelian::class, 'anggaran_id');
     }
 }

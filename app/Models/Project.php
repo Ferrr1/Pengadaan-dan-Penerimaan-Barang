@@ -17,6 +17,6 @@ class Project extends Model
 
     public function anggaran()
     {
-        return $this->hasOne(Anggaran::class);
+        return $this->hasOne(Anggaran::class, 'project_id');
     }
 }

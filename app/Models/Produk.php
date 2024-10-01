@@ -20,25 +20,13 @@ class Produk extends Model
         return $this->belongsTo(Satuan::class, 'satuan_id');
     }
 
-    public static function boot()
+    public function subPermintaanPembelian()
     {
-        parent::boot();
+        return $this->hasMany(SubPermintaan_Pembelian::class, 'produk_id');
+    }
 
-        // Event before creating a new model
-        static::creating(function ($produk) {
-            // Get the last Kode_Satuan from the database
-            $lastKodeProduk = Produk::max('kode_produk');
-
-            if ($lastKodeProduk) {
-                // Increment and format as 6-digit string
-                $nextKodeProduk = str_pad((int) $lastKodeProduk + 1, 6, '0', STR_PAD_LEFT);
-            } else {
-                // Start from 000001 if no records exist
-                $nextKodeProduk = '000001';
-            }
-
-            // Assign it to the model
-            $produk->kode_produk = $nextKodeProduk;
-        });
+    public function subAnggarans()
+    {
+        return $this->hasMany(SubAnggaran::class, 'produk_id');
     }
 }

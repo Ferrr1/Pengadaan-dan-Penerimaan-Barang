@@ -5,7 +5,7 @@
         </h2>
         {{-- Table Start --}}
         <div>
-            <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+            <div class="p-4 overflow-x-auto">
                 <form action="">
                     <div class="grid grid-cols-2 gap-4 min-w-full shadow rounded-md overflow-hidden">
                         <div>

@@ -46,7 +46,8 @@
             @include('pages.anggaran.add_sub_anggaran_modal')
             @include('pages.anggaran.edit_sub_anggaran_modal')
             @include('pages.anggaran.delete_sub_anggaran_modal')
-            @include('pages.anggaran.satuan')
+            @include('pages.anggaran.produk_modal')
+            {{-- @include('pages.anggaran.satuan') --}}
             {{-- @include('pages.anggaran.delete_modal') --}}
         </div>
     </div>

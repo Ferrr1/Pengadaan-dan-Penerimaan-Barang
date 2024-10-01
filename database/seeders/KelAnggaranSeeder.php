@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kel_Anggaran;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -34,5 +35,7 @@ class KelAnggaranSeeder extends Seeder
                 'nama_kel_anggaran' => 'Biaya Upah Administrasi',
             ],
         ];
+
+        Kel_Anggaran::insert($kelanggarans);
     }
 }

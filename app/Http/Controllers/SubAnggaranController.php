@@ -34,27 +34,23 @@ class SubAnggaranController extends Controller
     public function store(StoreSubAnggaranRequest $request, Anggaran $anggaran)
     {
         try {
+            $kel_anggaran = Kel_Anggaran::where('id', $request->input('kel_anggaran'))->firstOrFail();
             $validation = $request->validate([
                 'no_detail' => 'required',
-                'kode_anggaran' => 'required',
-                'nama_anggaran' => 'required|string',
-                'kel_anggaran' => 'required|exists:kel_anggarans,nama_kel_anggaran',
-                'satuan_id' => 'required|exists:satuans,id',
+                'produk_id' => 'required|exists:produks,id',
                 'kuantitas_anggaran' => 'required|numeric',
                 'harga_anggaran' => 'required|numeric',
             ]);
-
             $validation['anggaran_id'] = $anggaran->id;
+            $validation['kel_anggaran_id'] = $kel_anggaran->id;
             $validation['total_anggaran'] = $validation['kuantitas_anggaran'] * $validation['harga_anggaran'];
-            $kel_anggaran = Kel_Anggaran::where('nama_kel_anggaran', $validation['kel_anggaran'])->firstOrFail();
-            $validation['kel_anggaran_id'] =  $kel_anggaran->id;
             SubAnggaran::create($validation);
 
             return redirect()->route('anggarans.show', $anggaran)->with([
                 notyf()->position('y', 'top')->success('Sub Anggaran berhasil dibuat'),
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal dibuat. Silakan coba lagi.')]);
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal dibuat. Silakan coba lagi.' . ' ' . $th->getMessage())]);
         }
     }
 
@@ -83,26 +79,23 @@ class SubAnggaranController extends Controller
             $anggaran = $subAnggaran->anggaran;
             $validation = $request->validate([
                 'no_detail' => 'required',
-                'kode_anggaran' => 'required',
-                'nama_anggaran' => 'required|string',
-                'kel_anggaran' => 'required|exists:kel_anggarans,nama_kel_anggaran',
-                'satuan_id' => 'required|exists:satuans,id',
+                'produk_id' => 'required|exists:produks,id',
                 'kuantitas_anggaran' => 'required|numeric',
                 'harga_anggaran' => 'required|numeric',
             ]);
 
             $validation['anggaran_id'] = $anggaran->id;
             $validation['total_anggaran'] = $validation['kuantitas_anggaran'] * $validation['harga_anggaran'];
-            $kel_anggaran = Kel_Anggaran::where('nama_kel_anggaran', $validation['kel_anggaran'])->firstOrFail();
+            $kel_anggaran = Kel_Anggaran::where('id', $request->input('kel_anggaran'))->firstOrFail();
             $validation['kel_anggaran_id'] =  $kel_anggaran->id;
 
             $subAnggaran->update($validation);
 
             return redirect()->route('anggarans.show', $anggaran)->with([
-                notyf()->position('y', 'top')->success('Sub Anggaran berhasil dibuat'),
+                notyf()->position('y', 'top')->success('Sub Anggaran berhasil diupdate'),
             ]);
         } catch (\Throwable $th) {
-            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal dibuat. Silakan coba lagi.')]);
+            return redirect()->back()->with([notyf()->position('y', 'top')->error('Sub Anggaran gagal diupdate. Silakan coba lagi.' . ' ' . $th->getMessage())]);
         }
     }
 

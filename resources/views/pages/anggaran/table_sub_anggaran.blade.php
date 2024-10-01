@@ -99,19 +99,21 @@
                                     <p class="whitespace-no-wrap">{{ $subAnggaran->no_detail }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->kode_anggaran }}</p>
+                                    <p class="whitespace-no-wrap">{{ $subAnggaran->produks->kode_produk }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->nama_anggaran }}</p>
+                                    <p class="whitespace-no-wrap">{{ $subAnggaran->produks->nama_produk }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $subAnggaran->kel_anggaran }}</p>
+                                    <p class="whitespace-no-wrap">{{ $subAnggaran->kelAnggaran->nama_kel_anggaran }}
+                                    </p>
                                 </td>
                                 <td class="px-5 py-5">
                                     <span
                                         class="relative text-sm inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                         <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
-                                        <span class="relative">{{ $subAnggaran->satuan->singkatan_satuan }}</span>
+                                        <span
+                                            class="relative">{{ $subAnggaran->produks->satuan->singkatan_satuan }}</span>
                                     </span>
                                 </td>
                                 <td class="px-5 py-5">
