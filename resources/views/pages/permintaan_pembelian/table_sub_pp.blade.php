@@ -9,7 +9,17 @@
             </p>
         </div>
         <div class="flex gap-2">
-            <x-secondary-button class="mt-4 px-4 py-2">Cetak Laporan</x-secondary-button>
+            @if ($canPrintPdf)
+                <div class="mt-4">
+                    <a href="{{ route('subPermintaanPembelians.report', [$permintaan_Pembelian->id]) }}">
+                        <x-secondary-button class="px-4 py-2">Cetak Semua Sub Permintaan</x-secondary-button>
+                    </a>
+                    {{-- <a href="{{ route('subPermintaanPembelians.report', [$permintaan_Pembelian->id, 'limit' => 10]) }}"
+                        class="btn btn-secondary">
+                        Cetak 10 Sub Permintaan Teratas
+                    </a> --}}
+                </div>
+            @endif
             <x-primary-button x-data="" x-on:click="$dispatch('open-modal', `sub_pp_modal`)"
                 class="mt-4 px-4 py-2">Tambah Sub Permintaan</x-primary-button>
         </div>
@@ -149,7 +159,7 @@
                                         {{ formatRupiah($subPermintaanPembelian->total_sub_permintaan_pembelian) }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-nowrap text-nowrap">
+                                    <p class="line-clamp-2">
                                         {{ $subPermintaanPembelian->keterangan_sub_permintaan_pembelian ?? 'Tidak ada keterangan' }}
                                     </p>
                                 </td>

@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     // Sub Permintaan Pembelian
     Route::resource('subPermintaanPembelians', SubPermintaanPembelianController::class)->except(['store']);
     Route::post('/subPermintaanPembelians/{subPermintaanPembelian}', [SubPermintaanPembelianController::class, 'store'])->name('subPermintaanPembelians.store');
+    Route::get('/subPermintaanPembelians/{subPermintaanPembelian}/report', [SubPermintaanPembelianController::class, 'generatePdfReport'])->name('subPermintaanPembelians.report');
     // Satuan
     Route::resource('satuans', SatuanController::class);
     // Projects

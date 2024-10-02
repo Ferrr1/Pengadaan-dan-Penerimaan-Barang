@@ -25,6 +25,7 @@ class SubPermintaan_Pembelian extends Model
         return $this->belongsTo(Permintaan_Pembelian::class, 'permintaanpembelian_id');
     }
 
+
     public function produk()
     {
         return $this->belongsTo(Produk::class, 'produk_id');

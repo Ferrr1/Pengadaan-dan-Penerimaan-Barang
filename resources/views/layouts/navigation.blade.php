@@ -26,7 +26,12 @@
                 </x-nav-link>
                 <x-nav-link :href="route('permintaanPembelians.index')" :active="request()->routeIs('permintaanPembelians.index')">
                     <div class="flex items-center gap-2">
-                        <x-fluentui-box-multiple-arrow-left-20-o class="w-5" />{{ __('PP') }}
+                        <x-fluentui-box-multiple-arrow-right-24-o class="w-5" />{{ __('PP') }}
+                    </div>
+                </x-nav-link>
+                <x-nav-link :href="route('permintaanPembelians.index')" :active="request()->routeIs('permintaanPembelians.index')">
+                    <div class="flex items-center gap-2">
+                        <x-fluentui-box-multiple-arrow-left-20-o class="w-5" />{{ __('OP') }}
                     </div>
                 </x-nav-link>
             </div>

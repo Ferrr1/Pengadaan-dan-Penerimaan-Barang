@@ -6,11 +6,7 @@ use App\Models\Permintaan_Pembelian;
 use App\Http\Requests\StorePermintaan_PembelianRequest;
 use App\Http\Requests\UpdatePermintaan_PembelianRequest;
 use App\Models\Anggaran;
-use App\Models\Kel_Anggaran;
 use App\Models\Produk;
-use App\Models\Project;
-use App\Models\Satuan;
-use App\Models\SubPermintaan_Pembelian;
 use Illuminate\Http\Request;
 
 class PermintaanPembelianController extends Controller
@@ -162,10 +158,10 @@ class PermintaanPembelianController extends Controller
             "total_jumlah_harga" => $total_jumlah_harga,
             "total_harga_satuan" => $total_harga_satuan,
             "produks" => $produks,
-            "subAnggarans" => $subAnggarans
+            "subAnggarans" => $subAnggarans,
+            "canPrintPdf" => true,
         ]);
     }
-
     /**
      * Show the form for editing the specified resource.
      */

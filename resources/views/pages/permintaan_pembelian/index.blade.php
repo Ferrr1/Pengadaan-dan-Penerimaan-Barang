@@ -76,7 +76,7 @@
                                                     </div>
                                                     <div class="flex items-end mb-0.5 gap-2">
                                                         <x-primary-button type="button" @click="addItem" class="p-2"
-                                                            x-show="items.length < 4">
+                                                            x-show="items.length < 5">
                                                             <x-eva-plus class="w-5 h-5" />
                                                         </x-primary-button>
                                                         <x-secondary-button type="button" @click="removeItem(index)"
@@ -115,7 +115,7 @@
                 posisiJabatan: ''
             }],
             addItem() {
-                if (this.items.length < 4) {
+                if (this.items.length < 5) {
                     this.items.push({
                         tandaTangan: '',
                         posisiJabatan: ''

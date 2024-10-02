@@ -8,6 +8,7 @@
         "php": "^8.2",
         "afatmustafa/blade-hugeicons": "^0.0.3",
         "andreiio/blade-iconoir": "^4.5",
+        "barryvdh/laravel-dompdf": "^3.0",
         "codeat3/blade-akar-icons": "^2.0",
         "codeat3/blade-carbon-icons": "^2.29",
         "codeat3/blade-element-plus-icons": "^1.0",
