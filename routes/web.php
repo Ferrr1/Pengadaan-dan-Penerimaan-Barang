@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\KelAnggaranController;
+use App\Http\Controllers\OrderPembelianController;
 use App\Http\Controllers\PermintaanPembelianController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\RekananController;
 use App\Http\Controllers\SatuanController;
 use App\Http\Controllers\SubAnggaranController;
+use App\Http\Controllers\SubOrderPembelianController;
 use App\Http\Controllers\SubPermintaanPembelianController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\UserController;
@@ -48,6 +50,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('subPermintaanPembelians', SubPermintaanPembelianController::class)->except(['store']);
     Route::post('/subPermintaanPembelians/{subPermintaanPembelian}', [SubPermintaanPembelianController::class, 'store'])->name('subPermintaanPembelians.store');
     Route::get('/subPermintaanPembelians/{subPermintaanPembelian}/report', [SubPermintaanPembelianController::class, 'generatePdfReport'])->name('subPermintaanPembelians.report');
+    // Order Pembelian
+    Route::resource('orderPembelians', OrderPembelianController::class);
+    // Sub Order Pembelian
+    Route::resource('subOrderPembelians', SubOrderPembelianController::class)->except(['store']);
+    Route::post('/subOrderPembelians/{subOrderPembelian}', [SubOrderPembelianController::class, 'store'])->name('subOrderPembelians.store');
+    Route::get('/subOrderPembelians/{subOrderPembelian}/report', [SubOrderPembelianController::class, 'generatePdfReport'])->name('subOrderPembelians.report');
     // Satuan
     Route::resource('satuans', SatuanController::class);
     // Projects

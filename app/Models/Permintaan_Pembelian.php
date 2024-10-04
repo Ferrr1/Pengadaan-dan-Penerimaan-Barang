@@ -12,6 +12,7 @@ class Permintaan_Pembelian extends Model
 
     protected $fillable = [
         'anggaran_id',
+        'transaksi_id',
         'nomor_pp',
         'tgl_pp',
         'tandatangan_pp',
@@ -26,8 +27,18 @@ class Permintaan_Pembelian extends Model
         return $this->belongsTo(Anggaran::class, 'anggaran_id');
     }
 
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class, 'transaksi_id');
+    }
+
     public function subPermintaanPembelians()
     {
         return $this->hasMany(SubPermintaan_Pembelian::class, 'permintaanpembelian_id');
+    }
+
+    public function orderPembelians()
+    {
+        return $this->hasOne(OrderPembelian::class, 'permintaanpembelian_id');
     }
 }

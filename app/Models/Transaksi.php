@@ -13,4 +13,9 @@ class Transaksi extends Model
         'kode_transaksi',
         'nama_transaksi',
     ];
+
+    public function permintaanPembelian()
+    {
+        return $this->hasOne(Permintaan_Pembelian::class, 'transaksi_id');
+    }
 }

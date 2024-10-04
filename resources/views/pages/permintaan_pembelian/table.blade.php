@@ -79,7 +79,8 @@
                                 </td>
                                 <td class="px-5 py-5">
                                     <p class="whitespace-no-wrap">
-                                        {{ $permintaan_pembelian->tgl_pp }}</p>
+                                        {{ \Carbon\Carbon::parse($permintaan_pembelian->tgl_pp)->isoFormat('DD/MM/YYYY') }}
+                                    </p>
                                 </td>
                                 <td class="px-5 py-5 flex gap-2 items-center justify-start">
                                     <a href="{{ route('permintaanPembelians.show', $permintaan_pembelian->id) }}">

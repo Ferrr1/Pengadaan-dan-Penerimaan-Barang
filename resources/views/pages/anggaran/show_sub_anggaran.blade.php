@@ -13,7 +13,7 @@
                         <div>
                             <x-input-label for="kode" :value="__('Kode Proyek')" />
                             <div class="relative">
-                                <div x-data="{ kodeProject: '{{ $projects->kode_project }}', namaProject: '{{ $projects->nama_project }}' }"
+                                <div x-data="{ kodeProject: '{{ $projects->kode_project }}', namaProject: `{{ $projects->nama_project }}` }"
                                     @select-project.window="kodeProject = $event.detail.id; namaProject = $event.detail.name">
                                     <x-text-input id="project" class="block mt-1 w-full" type="text" name="project"
                                         x-model="kodeProject" readonly />

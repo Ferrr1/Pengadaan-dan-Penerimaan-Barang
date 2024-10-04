@@ -49,7 +49,7 @@
                                         <!-- Checkmark Button with Click Event -->
                                         <x-primary-button class="p-1" x-data
                                             x-on:click="
-                                        $dispatch('select-anggaran', { id: '{{ $anggaran->project->id }}', kode: '{{ $anggaran->project->kode_project }}', name: '{{ $anggaran->project->nama_project }}' });
+                                        $dispatch('select-anggaran', { id: '{{ $anggaran->project->id }}', kode: '{{ $anggaran->project->kode_project }}', name: `{{ $anggaran->project->nama_project }}` });
                                         $dispatch('close-modal', 'anggaran_modal_permintaan_pembelian');">
                                             <x-eva-checkmark-outline class="w-5 h-5" />
                                         </x-primary-button>

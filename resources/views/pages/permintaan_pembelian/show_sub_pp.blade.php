@@ -11,8 +11,10 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100 grid gap-4">
                     <div>
                         <div x-data="{
-                            kodeProject: '{{ $anggaranpembelians->project->kode_project }}',
-                            namaProject: '{{ $anggaranpembelians->project->nama_project }}',
+                            kodeProject: '{{ $permintaan_Pembelian->anggaran->project->kode_project }}',
+                            namaProject: `{{ $permintaan_Pembelian->anggaran->project->nama_project }}`,
+                            kodeTransaksi: '{{ $permintaan_Pembelian->transaksi->kode_transaksi }}',
+                            namaTransaksi: '{{ $permintaan_Pembelian->transaksi->nama_transaksi }}',
                             nomorPP: '{{ $permintaan_Pembelian->nomor_pp }}',
                         }">
                             <div>
@@ -35,6 +37,24 @@
                                         disabled>
                                         <x-eva-search-outline class="w-4" />
                                     </x-secondary-button>
+                                </div>
+                                <div class="col-span-4">
+                                    <x-input-label for="kode_rekanan" :value="__('Kode Transaksi')" class="mt-1" />
+                                    <x-text-input id="kode_rekanan" class="block mt-1 w-full" type="text"
+                                        name="kode_rekanan" x-model="kodeTransaksi" readonly required />
+                                    <input type="text" name="rekanan_id" x-model="idTransaksi" hidden>
+                                </div>
+                                <div class="col-span-8">
+                                    <x-input-label for="kode_anggaran" :value="__('Nama Transaksi')" class="mt-1" />
+                                    <div class="relative">
+                                        <x-text-input id="anggaran_project" class="block mt-1 w-full" type="text"
+                                            x-model="namaTransaksi" readonly required />
+                                        <x-secondary-button disabled type="button"
+                                            class="absolute py-2 px-3 right-1 top-1"
+                                            x-on:click="$dispatch('open-modal', 'transaksi_modal_order_pembelian')">
+                                            <x-eva-search-outline class="w-4" />
+                                        </x-secondary-button>
+                                    </div>
                                 </div>
                                 <div class="col-span-4">
                                     <x-input-label for="tgl_pp" :value="__('Tanggal')" class="mt-2" />

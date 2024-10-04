@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('permintaan_pembelians', function (Blueprint $table) {
             $table->id();
             $table->foreignId('anggaran_id')->constrained('anggarans')->onDelete('cascade');
+            $table->foreignId('transaksi_id')->constrained('transaksis')->onDelete('cascade');
             $table->string('nomor_pp')->unique();
             $table->date('tgl_pp');
             $table->json('tandatangan_pp');

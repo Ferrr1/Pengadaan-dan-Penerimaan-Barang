@@ -20,4 +20,9 @@ class Rekanan extends Model
         'tgl_akhir',
         'project_id',
     ];
+
+    public function orderPembelian()
+    {
+        return $this->hasOne(OrderPembelian::class, "rekanan_id");
+    }
 }

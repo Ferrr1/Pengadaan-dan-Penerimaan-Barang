@@ -24,11 +24,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SatuanSeeder::class,
-            RekananSeeder::class,
             ProjectSeeder::class,
             ProdukSeeder::class,
+            RekananSeeder::class,
             KelAnggaranSeeder::class,
-            // AnggaranSeeder::class
+            TransaksiSeeder::class,
         ]);
     }
 }

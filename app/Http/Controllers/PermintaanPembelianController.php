@@ -7,6 +7,7 @@ use App\Http\Requests\StorePermintaan_PembelianRequest;
 use App\Http\Requests\UpdatePermintaan_PembelianRequest;
 use App\Models\Anggaran;
 use App\Models\Produk;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 
 class PermintaanPembelianController extends Controller
@@ -18,6 +19,7 @@ class PermintaanPembelianController extends Controller
     {
         $queryPermintaanPembelian = Permintaan_Pembelian::query()->with('anggaran');
         $queryAnggaran = Anggaran::query()->with('project');
+        $queryTransaksi = Transaksi::query();
         $sortField = $request->input("sort_field", 'created_at');
         $sortDirection = $request->input("sort_direction", "desc");
         $perPage = $request->input("perPage", 10);
@@ -57,12 +59,13 @@ class PermintaanPembelianController extends Controller
         } else {
             $perPage = (int) $perPage;
             $anggarans = $queryAnggaran->orderBy($sortField, $sortDirection)->get();
+            $transaksis = $queryTransaksi->orderBy($sortField, $sortDirection)->get();
             $permintaan_pembelians = $queryPermintaanPembelian->orderBy($sortField, $sortDirection)
                 ->paginate($perPage)
                 ->onEachSide(1);
         }
 
-        return view('pages.permintaan_pembelian.index', compact('permintaan_pembelians', 'anggarans', 'sortField', 'sortDirection', 'perPage', 'newPPCode'));
+        return view('pages.permintaan_pembelian.index', compact('permintaan_pembelians', 'anggarans', 'transaksis', 'sortField', 'sortDirection', 'perPage', 'newPPCode'));
     }
 
     /**
@@ -80,6 +83,7 @@ class PermintaanPembelianController extends Controller
     {
         try {
             $validation = $request->validate([
+                'transaksi_id' => 'required|exists:transaksis,id',
                 'nomor_pp' => 'required|string',
                 'tgl_pp' => 'required|date',
                 'tandatangan_pp' => 'required|array',
@@ -116,7 +120,8 @@ class PermintaanPembelianController extends Controller
      */
     public function show($id, Request $request)
     {
-        $permintaan_Pembelian = Permintaan_Pembelian::with(['anggaran', 'subPermintaanPembelians.subAnggaran', 'subPermintaanPembelians.produk'])->findOrFail($id);
+        $permintaan_Pembelian = Permintaan_Pembelian::with(['anggaran', 'transaksi', 'subPermintaanPembelians.subAnggaran', 'subPermintaanPembelians.produk'])->findOrFail($id)->first();
+        // dd($permintaan_Pembelian);
         $queryPermintaanPembelian = $permintaan_Pembelian->subPermintaanPembelians();
         $queryProduk = Produk::query();
 
@@ -142,7 +147,6 @@ class PermintaanPembelianController extends Controller
             $subPermintaanPembelians = $subPermintaanPembelians->get();
         }
 
-        $anggaranpembelians = $permintaan_Pembelian->anggaran;
         $produks = $queryProduk->orderBy($sortField, $sortDirection)->get();
 
         $subAnggarans = $permintaan_Pembelian->anggaran->subAnggarans;
@@ -150,7 +154,6 @@ class PermintaanPembelianController extends Controller
         return view("pages.permintaan_pembelian.show_sub_pp")->with([
             "permintaan_Pembelian" => $permintaan_Pembelian,
             "subPermintaanPembelians" => $subPermintaanPembelians,
-            "anggaranpembelians" => $anggaranpembelians,
             "sortField" => $sortField,
             "sortDirection" => $sortDirection,
             "perPage" => $perPage,

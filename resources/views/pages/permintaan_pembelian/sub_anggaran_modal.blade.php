@@ -80,7 +80,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6"
+                                    <td colspan="7"
                                         class="px-5 py-5 text-sm border-b-2 border-gray-200 dark:border-gray-700 text-center">
                                         Tidak ada data Sub Anggaran yang tersedia.
                                     </td>

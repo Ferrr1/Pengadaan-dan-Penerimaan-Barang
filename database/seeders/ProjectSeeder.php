@@ -3,27 +3,32 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ProjectSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    const CHUNK_SIZE = 200;
+    const TOTAL_RECORDS = 200;
+
     public function run(): void
     {
-        // Project::factory(100)->create();
-        $projects = [];
+        $faker = \Faker\Factory::create();
 
-        for ($i = 1; $i <= 100; $i++) {
-            $projects[] = [
-                'kode_project' => str_pad($i, 6, '0', STR_PAD_LEFT),
-                'nama_project' => fake()->company() . ' Construction Project',
-                'tgl_mulai' => fake()->date(),
-                'status_project' => fake()->randomElement(['aktif', 'tidak_aktif']),
-            ];
+        for ($i = 0; $i < self::TOTAL_RECORDS; $i += self::CHUNK_SIZE) {
+            $projects = [];
+
+            for ($j = 0; $j < self::CHUNK_SIZE; $j++) {
+                $projects[] = [
+                    'kode_project' => str_pad($i + $j + 1, 6, '0', STR_PAD_LEFT),
+                    'nama_project' => $faker->company() . ' Construction Project',
+                    'tgl_mulai' => $faker->date(),
+                    'status_project' => $faker->randomElement(['aktif', 'tidak_aktif']),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+
+            Project::insert($projects);
         }
-        Project::query()->insert($projects);
     }
 }

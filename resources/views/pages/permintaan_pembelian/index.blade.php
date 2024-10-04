@@ -17,9 +17,21 @@
                                 idProject: '',
                                 kodeProject: '',
                                 namaProject: '',
+                                idTransaksi: '',
+                                kodeTransaksi: '',
+                                namaTransaksi: '',
                                 nomorPP: '{{ $newPPCode }}',
                                 updateNomorPP() {
-                                    this.nomorPP = this.nomorPP.replace('XXXXX', this.kodeProject);
+                                    if (this.nomorPP.includes('XXXXX')) {
+                                        this.nomorPP = this.nomorPP.replace('XXXXX', this.kodeProject);
+                                    } else {
+                                        // Jika tidak ada, ganti bagian tertentu dari nomorPP
+                                        let parts = this.nomorPP.split('/');
+                                        if (parts.length >= 3) {
+                                            parts[2] = this.kodeProject;
+                                            this.nomorPP = parts.join('/');
+                                        }
+                                    }
                                 }
                             }"
                                 @select-anggaran.window="
@@ -27,6 +39,11 @@
                                 kodeProject = $event.detail.kode;
                                 namaProject = $event.detail.name;
                                 updateNomorPP();
+                            "
+                                @select-transaksi.window="
+                                idTransaksi = $event.detail.id;
+                                kodeTransaksi = $event.detail.kode;
+                                namaTransaksi = $event.detail.name;
                             ">
                                 <div>
                                     <x-input-label for="nomor_pp" :value="__('Nomor PP')" />
@@ -35,22 +52,42 @@
                                     <input type="text" name="anggaran_id" x-model="idProject" hidden>
                                     <x-input-error :messages="$errors->get('nomor_pp')" class="mt-2" />
                                 </div>
-                                <x-input-label class="mt-2" for="kode_anggaran" :value="__('Proyek Peminta')" />
                                 <div class="grid grid-cols-12 gap-2">
                                     <div class="col-span-4">
+                                        <x-input-label class="mt-2" for="kode_anggaran" :value="__('Kode Proyek')" />
                                         <x-text-input id="kode_anggaran" class="block mt-1 w-full" type="text"
                                             name="kode_anggaran" x-model="kodeProject" readonly required />
                                     </div>
-                                    <div class="relative col-span-8">
-                                        <x-text-input id="anggaran_project" class="block mt-1 w-full" type="text"
-                                            x-model="namaProject" readonly required />
-                                        <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-2"
-                                            x-on:click="$dispatch('open-modal', 'anggaran_modal_permintaan_pembelian')">
-                                            <x-eva-search-outline class="w-4" />
-                                        </x-secondary-button>
+                                    <div class="col-span-8">
+                                        <x-input-label class="mt-2" for="kode_anggaran" :value="__('Proyek Peminta')" />
+                                        <div class="relative">
+                                            <x-text-input id="anggaran_project" class="block mt-1 w-full" type="text"
+                                                x-model="namaProject" readonly required />
+                                            <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-1"
+                                                x-on:click="$dispatch('open-modal', 'anggaran_modal_permintaan_pembelian')">
+                                                <x-eva-search-outline class="w-4" />
+                                            </x-secondary-button>
+                                        </div>
                                     </div>
                                     <div class="col-span-4">
-                                        <x-input-label for="tgl_pp" :value="__('Tanggal')" class="mt-2" />
+                                        <x-input-label for="kode_transaksi" :value="__('Kode Transaksi')" class="mt-1" />
+                                        <x-text-input id="kode_transaksi" class="block mt-1 w-full" type="text"
+                                            name="kode_transaksi" x-model="kodeTransaksi" readonly required />
+                                        <input type="text" name="transaksi_id" x-model="idTransaksi" hidden>
+                                    </div>
+                                    <div class="col-span-8">
+                                        <x-input-label for="nama_transaksi" :value="__('Nama Transaksi')" class="mt-1" />
+                                        <div class="relative">
+                                            <x-text-input id="nama_transaksi" class="block mt-1 w-full" type="text"
+                                                x-model="namaTransaksi" readonly required />
+                                            <x-secondary-button type="button" class="absolute py-2 px-3 right-1 top-1"
+                                                x-on:click="$dispatch('open-modal', 'transaksi_modal_permintaan_pembelian')">
+                                                <x-eva-search-outline class="w-4" />
+                                            </x-secondary-button>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-4">
+                                        <x-input-label for="tgl_pp" :value="__('Tanggal')" class="mt-1" />
                                         <x-text-input id="tgl_pp" class="block mt-1 w-full" type="date"
                                             name="tgl_pp" required />
                                     </div>
@@ -59,7 +96,7 @@
                                             <div class="flex flex-col space-y-2">
                                                 <div class="flex space-x-2">
                                                     <div class="flex-grow">
-                                                        <x-input-label :value="__('Tanda Tangan')" class="mt-2" />
+                                                        <x-input-label :value="__('Tanda Tangan')" class="mt-1" />
                                                         <x-text-input
                                                             x-bind:id="'tandatangan_pp_' + index + '_tanda_tangan'"
                                                             class="block mt-1 w-full" type="text"
@@ -67,7 +104,7 @@
                                                             x-model="item.tandaTangan" required />
                                                     </div>
                                                     <div class="flex-grow">
-                                                        <x-input-label :value="__('Posisi Jabatan')" class="mt-2" />
+                                                        <x-input-label :value="__('Posisi Jabatan')" class="mt-1" />
                                                         <x-text-input
                                                             x-bind:id="'tandatangan_pp_' + index + '_posisi_jabatan'"
                                                             class="block mt-1 w-full" type="text"
@@ -101,6 +138,7 @@
             {{-- Modal --}}
             @include('pages.permintaan_pembelian.delete_modal')
             @include('pages.permintaan_pembelian.project_anggaran_modal')
+            @include('pages.permintaan_pembelian.transaksi_modal')
         </div>
     </div>
 </x-app-layout>

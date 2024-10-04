@@ -34,4 +34,9 @@ class SubPermintaan_Pembelian extends Model
     {
         return $this->belongsTo(SubAnggaran::class, 'sub_anggaran_id');
     }
+
+    public function subOrderPembelian()
+    {
+        return $this->hasOne(SubOrderPembelian::class, 'sub_permintaanpembelian_id');
+    }
 }

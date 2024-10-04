@@ -93,18 +93,19 @@
                                     <p class="whitespace-no-wrap">{{ $project->nama_project }}</p>
                                 </td>
                                 <td class="px-5 py-5">
-                                    <p class="whitespace-no-wrap">{{ $project->tgl_mulai }}</p>
+                                    <p class="whitespace-no-wrap">
+                                        {{ \Carbon\Carbon::parse($project->tgl_mulai)->isoFormat('DD/MM/YYYY') }}</p>
                                 </td>
                                 <td class="px-5 py-5">
                                     {!! $project->status_project === 'aktif'
                                         ? '<span class="relative text-sm inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                    <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
-                                    <span class="relative">AKTIF</span>
-                                    </span>'
+                                                                        <span aria-hidden class="absolute inset-0 bg-green-200 rounded-full"></span>
+                                                                        <span class="relative">AKTIF</span>
+                                                                        </span>'
                                         : '<span class="relative text-sm inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                    <span aria-hidden class="absolute inset-0 bg-red-200 rounded-full"></span>
-                                    <span class="relative text-nowrap">TIDAK AKTIF</span>
-                                    </span>' !!}
+                                                                        <span aria-hidden class="absolute inset-0 bg-red-200 rounded-full"></span>
+                                                                        <span class="relative text-nowrap">TIDAK AKTIF</span>
+                                                                        </span>' !!}
                                 </td>
                                 <td class="px-5 py-5 flex gap-2 items-center justify-center">
                                     <x-primary-button class="p-2" x-data=""

@@ -49,7 +49,7 @@
                                         <!-- Checkmark Button with Click Event -->
                                         <x-primary-button class="p-1" x-data
                                             x-on:click="
-                                        $dispatch('select-project', { id: '{{ $project->id }}', kode: '{{ $project->kode_project }}', name: '{{ $project->nama_project }}' });
+                                        $dispatch('select-project', { id: '{{ $project->id }}', kode: '{{ $project->kode_project }}', name: `{{ $project->nama_project }}` });
                                         $dispatch('close-modal', 'project_modal_anggaran');">
                                             <x-eva-checkmark-outline class="w-5 h-5" />
                                         </x-primary-button>

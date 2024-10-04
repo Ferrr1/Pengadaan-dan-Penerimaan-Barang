@@ -35,12 +35,12 @@
         .main-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .main-table th,
         .main-table td {
-            border: 1px solid #848484;
+            border: 1px solid #000000;
             padding: 4px;
             text-align: left;
         }
@@ -94,7 +94,7 @@
         }
 
         .ket-permintaan {
-            font-size: 14px;
+            font-size: 12px;
             width: 100%;
             overflow: hidden;
             margin-bottom: 20px;
@@ -120,7 +120,7 @@
         .signature-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 12px;
             margin-top: 20px;
         }
 
@@ -136,20 +136,20 @@
 
         .signature-middle td {
             height: 80px;
-            font-size: 13px;
+            font-size: 12px;
             vertical-align: bottom;
             text-align: center;
         }
 
         .signature-middle-copy td {
             height: 5px;
-            font-size: 13px;
+            font-size: 12px;
             vertical-align: bottom;
             text-align: center;
         }
 
         .signature-bottom td {
-            font-size: 13px;
+            font-size: 12px;
             vertical-align: bottom;
             text-align: center;
         }
@@ -194,21 +194,39 @@
     </div>
     <h3 class="report-title">SURAT PERMINTAAN PEMBELIAN</h3>
     <div class="ket-permintaan clearfix">
-        <div class="ket-permintaan-left">
-            <p style="font-weight: bold;">Nomor: {{ $permintaan_Pembelian->nomor_pp }}</p>
-            <p>Untuk Keperluan : {{ $permintaan_Pembelian->anggaran->project->kode_project }} -
-                {{ $permintaan_Pembelian->anggaran->project->nama_project }}</p>
-        </div>
-        <div class="ket-permintaan-right">
-            <p>Kelompok:
-                @foreach ($kelompokAnggarans as $index => $kelompok)
-                    {{ $kelompok }}@if ($index < count($kelompokAnggarans) - 1)
-                        ,
-                    @endif
-                @endforeach
-            </p>
-            <p>Tanggal: {{ $permintaan_Pembelian->tgl_pp }}</p>
-        </div>
+        <table class="ket-permintaan-left">
+            <tr>
+                <td>
+                    Nomor
+                </td>
+                <td>:</td>
+                <td style="font-weight: bold;">{{ $permintaan_Pembelian->nomor_pp }}</td>
+            </tr>
+            <tr>
+                <td>Untuk Keperluan</td>
+                <td>:</td>
+                <td>{{ $permintaan_Pembelian->anggaran->project->kode_project }} -
+                    {{ $permintaan_Pembelian->anggaran->project->nama_project }}</td>
+            </tr>
+        </table>
+        <table class="ket-permintaan-right">
+            <tr>
+                <td>Kelompok</td>
+                <td>:</td>
+                <td>
+                    @foreach ($kelompokAnggarans as $index => $kelompok)
+                        {{ $kelompok }}@if ($index < count($kelompokAnggarans) - 1)
+                            ,
+                        @endif
+                    @endforeach
+                </td>
+            </tr>
+            <tr>
+                <td>Tanggal</td>
+                <td>:</td>
+                <td>{{ \Carbon\Carbon::parse($permintaan_Pembelian->tgl_pp)->isoFormat('DD/MM/YYYY') }}</td>
+            </tr>
+        </table>
     </div>
 
     <table class="main-table">
@@ -226,9 +244,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($subPermintaanPembelians as $index => $subPP)
+            @forelse ($subPermintaanPembelians as $index => $subPP)
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <td style="text-align: center">{{ $index + 1 }}</td>
                     <td style="text-align: center">{{ $subPP->produk->kode_produk }}</td>
                     <td style="text-align: center">{{ $subPP->produk->nama_produk }}</td>
                     <td style="text-align: center">{{ $subPP->spesifikasi_sub_permintaan_pembelian }}</td>
@@ -240,7 +258,12 @@
                         {{ $subPP->keterangan_sub_permintaan_pembelian ?? 'Tidak ada keterangan' }}
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="9" style="text-align: center">Tidak ada data permintaan pembelian yang tersedia.
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
         <tfoot>
             <tr>
@@ -256,7 +279,7 @@
         <tr>
             <td style="width: 20%;">Material Dibutuhkan</td>
             <td style="width: 5%;">:</td>
-            <td>{{ $permintaan_Pembelian->tgl_pp }}</td>
+            <td>{{ \Carbon\Carbon::parse($permintaan_Pembelian->tgl_pp)->isoFormat('DD/MM/YYYY') }}</td>
         </tr>
         <tr>
             <td>Keterangan</td>
