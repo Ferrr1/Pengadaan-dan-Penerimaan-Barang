@@ -158,11 +158,9 @@ class SubOrderPembelianController extends Controller
             if (!$AnggaranPP->permintaanPembelian->subPermintaanPembelians()->where('id', $subPermintaanPembelian->id)->exists()) {
                 throw new \Exception('Sub Anggaran tidak sesuai dengan Anggaran Permintaan Pembelian.');
             }
-            $PPN = (($subPermintaanPembelian->harga_sub_permintaan_pembelian * ($validation['kuantitas_sub_order_pembelian'])) * ($validation['ppn_sub_order_pembelian'] / 100));
-            $totalWithPPN = ((($subPermintaanPembelian->harga_sub_permintaan_pembelian) * ($validation['kuantitas_sub_order_pembelian'])) + $PPN);
             $totalWithoutPPN = (($subPermintaanPembelian->harga_sub_permintaan_pembelian) * ($validation['kuantitas_sub_order_pembelian']));
             $validation['orderpembelian_id'] = $AnggaranPP->id;
-            $validation['total_sub_order_pembelian'] = $totalWithPPN;
+            $validation['total_sub_order_pembelian'] = $totalWithoutPPN;
 
             $kuantitasSubOrderPembelianLama = $subOrderPembelian->kuantitas_sub_order_pembelian;
             $totalHargaSubOrderPembelianLama = $subOrderPembelian->total_sub_order_pembelian;
